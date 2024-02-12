@@ -12,7 +12,6 @@ class UserModel {
     this.onlineStatus,
     this.name,
     this.email,
-    this.deviceToken,
     this.isNotificationsEnabled,
   });
 
@@ -21,7 +20,6 @@ class UserModel {
     onlineStatus = json['onlineStatus'] ?? '';
     name = json['name'] ?? '';
     email = json['email'] ?? '';
-    deviceToken = json['deviceToken'] ?? '';
     isNotificationsEnabled = json['isNotificationsEnabled'] ?? '';
   }
 
@@ -31,7 +29,6 @@ class UserModel {
     data['onlineStatus'] = onlineStatus;
     data['name'] = name;
     data['email'] = email;
-    data['deviceToken'] = deviceToken;
     data['isNotificationsEnabled'] = isNotificationsEnabled;
     return data;
   }

@@ -7,6 +7,7 @@ import 'package:todo_app/res/theme/light_theme.dart';
 import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/utils/routes/routes.dart';
 import 'package:todo_app/view_model/controller/login/login_controller.dart';
+import 'package:todo_app/view_model/controller/signup/signup_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => SignupController()),
       ],
       child: MaterialApp(
         title: 'TODOER',

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/res/colors.dart';
+import 'package:todo_app/res/component/google_login_widget.dart';
 import 'package:todo_app/res/component/round_button.dart';
 import 'package:todo_app/res/extensions.dart';
 import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/utils/utils.dart';
-import 'package:todo_app/view/login/widgets/google_login_widget.dart';
 import 'package:todo_app/view/login/widgets/login_input_email_text.dart';
 import 'package:todo_app/view/login/widgets/login_password_input_text_field.dart';
 import 'package:todo_app/view_model/controller/login/login_controller.dart';
@@ -31,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 60.height,
                 Text(
-                  'Hi Welcome Back',
+                  'Hi Welcome Back 👋',
                   style: Theme.of(context)
                       .textTheme
                       .headlineLarge!
@@ -57,10 +57,8 @@ class _LoginViewState extends State<LoginView> {
                           Navigator.pushNamed(context, RouteName.forgotView),
                       child: Text(
                         'Forgot Password?',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(color: AppColors.accentTextColor),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.accentTextColor, fontSize: 16),
                       ),
                     ),
                   ],
@@ -93,8 +91,10 @@ class _LoginViewState extends State<LoginView> {
                 Center(
                   child: Text(
                     'Signin With',
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        fontSize: 16, color: AppColors.accentTextColor),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontSize: 16),
                   ),
                 ),
                 12.height,
@@ -108,8 +108,10 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     Text(
                       "Not registered yet? ",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontSize: 16, color: AppColors.accentTextColor),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(fontSize: 16),
                     ),
                     GestureDetector(
                       onTap: () =>
@@ -122,7 +124,8 @@ class _LoginViewState extends State<LoginView> {
                                 .textTheme
                                 .bodyMedium!
                                 .copyWith(
-                                    color: AppColors.redColor, fontSize: 16),
+                                    color: AppColors.accentTextColor,
+                                    fontSize: 16),
                           )),
                     ),
                   ],

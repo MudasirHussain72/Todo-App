@@ -68,7 +68,7 @@ class LoginController with ChangeNotifier {
       //   userEmailIsNotVerified(context, value);
       // } else {
       //   //getting user details
-      //
+
       // }
     } on FirebaseAuthException catch (e) {
       setLoading(false);
@@ -133,7 +133,7 @@ class LoginController with ChangeNotifier {
           contentPadding: const EdgeInsets.all(20),
           actionsPadding: const EdgeInsets.only(bottom: 20),
           content: Text(
-            'Your email is not verified. We have alread sent you an email link to veriyf your email.',
+            'Your email is not verified. We have already sent you an email link to veriyf your email.',
             style: Theme.of(context)
                 .textTheme
                 .displayMedium!

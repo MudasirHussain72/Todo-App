@@ -60,29 +60,25 @@ class InputTextFieldWidgetWithSuffixIcon extends StatelessWidget {
               .textTheme
               .headlineSmall!
               .copyWith(fontSize: 14, color: AppColors.alertColor),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: AppColors.blueColor.withOpacity(.4), width: 1.0),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.slate400, width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: AppColors.slateColor.withOpacity(.4), width: 1.0),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.slate400, width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(
                 color: AppColors.slateColor.withOpacity(.4), width: 1.0),
+            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+          ),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.slate400, width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: AppColors.slateColor.withOpacity(.4), width: 1.0),
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: AppColors.slateColor.withOpacity(.8), width: 1.0),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.slate400, width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
         ),
