@@ -7,6 +7,7 @@ import 'package:todo_app/view/splash_view/widgets/semi_circle_two_color_d_shape_
 import 'package:todo_app/view/splash_view/widgets/semi_circle_part_bottom.dart';
 import 'package:todo_app/view/splash_view/widgets/circle_part_bottom_left.dart';
 import 'package:todo_app/view/splash_view/widgets/semi_circle_part_top.dart';
+import 'package:todo_app/view_model/services/splash_services.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -35,6 +36,7 @@ class _SplashViewState extends State<SplashView>
       });
 
     _controller.forward();
+    SplashServices().isLogin(context);
   }
 
   @override
