@@ -60,7 +60,7 @@ class SignupController with ChangeNotifier {
         nameController.clear();
         emailController.clear();
         passwordController.clear();
-
+        Navigator.pop(context);
         Utils.flushBarDoneMessage(
             'Account create successfully, we have sent a verification email to verify your email. Please check inbox or spam folder.',
             context);

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/res/colors.dart';
+import 'package:todo_app/res/component/logout_button.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,7 +22,7 @@ class _DashboardViewState extends State<DashboardView>
     return [
       const Scaffold(),
       const Scaffold(),
-      const Scaffold(),
+      const Scaffold(body: Center(child: LogoutButtonWidget())),
     ];
   }
 
