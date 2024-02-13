@@ -5,24 +5,34 @@ import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view_model/controller/signup/signup_controller.dart';
 
 class SignupEmailInputTextFiled extends StatelessWidget {
-  const SignupEmailInputTextFiled({Key? key}) : super(key: key);
+  final bool selected;
+  const SignupEmailInputTextFiled({Key? key, required this.selected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SignupController>(builder: (context, provider, child) {
-      return InputTextField(
-        myController: provider.emailController,
-        focusNode: provider.emailFocusNode,
-        onFiledSubmittedValue: (newValue) {
-          Utils.fieldFocus(
-              context, provider.emailFocusNode, provider.passwordFocusNode);
-        },
-        keyBoardType: TextInputType.emailAddress,
-        hint: 'Enter your e-mail',
-        onValidator: (value) {
-          return null;
-        },
-      );
-    });
+    return AnimatedPositioned(
+        top: selected
+            ? MediaQuery.of(context).size.height * .32
+            : MediaQuery.of(context).size.height / .6,
+        right: 20,
+        left: 20,
+        duration: const Duration(seconds: 2),
+        curve: Curves.fastOutSlowIn,
+        child: Consumer<SignupController>(builder: (context, provider, child) {
+          return InputTextField(
+            myController: provider.emailController,
+            focusNode: provider.emailFocusNode,
+            onFiledSubmittedValue: (newValue) {
+              Utils.fieldFocus(
+                  context, provider.emailFocusNode, provider.passwordFocusNode);
+            },
+            keyBoardType: TextInputType.emailAddress,
+            hint: 'Enter your e-mail',
+            onValidator: (value) {
+              return null;
+            },
+          );
+        }));
   }
 }

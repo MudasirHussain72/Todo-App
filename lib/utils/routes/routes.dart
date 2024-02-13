@@ -3,7 +3,7 @@ import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/view/dashboard/dashboard_view.dart';
 import 'package:todo_app/view/forgot_password/forgot_password_view.dart';
 import 'package:todo_app/view/login/login_view.dart';
-import 'package:todo_app/view/signup/sign_view.dart';
+import 'package:todo_app/view/signup/signup_view.dart';
 import 'package:todo_app/view/splash_view/splash_view.dart';
 
 class Routes {
@@ -15,7 +15,7 @@ class Routes {
       case RouteName.loginView:
         return MaterialPageRoute(builder: (_) => const LoginView());
       case RouteName.signUpView:
-        return MaterialPageRoute(builder: (_) => const SignupView());
+        return MaterialPageRoute(builder: (_) => SignupView());
       case RouteName.forgotView:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case RouteName.dashboardView:
