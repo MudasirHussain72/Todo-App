@@ -6,6 +6,7 @@ import 'package:todo_app/firebase_options.dart';
 import 'package:todo_app/res/theme/light_theme.dart';
 import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/utils/routes/routes.dart';
+import 'package:todo_app/view_model/controller/forgot_password/forgot_password_controller.dart';
 import 'package:todo_app/view_model/controller/login/login_controller.dart';
 import 'package:todo_app/view_model/controller/signup/signup_controller.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginController()),
         ChangeNotifierProvider(create: (_) => SignupController()),
+        ChangeNotifierProvider(create: (_) => ForgotPasswordController()),
       ],
       child: MaterialApp(
         title: 'TODOER',

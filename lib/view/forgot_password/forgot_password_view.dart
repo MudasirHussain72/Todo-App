@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/res/component/round_button.dart';
 import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view/forgot_password/widgets/forgot_password_email.dart';
-import 'package:todo_app/view_model/controller/login/login_controller.dart';
+import 'package:todo_app/view_model/controller/forgot_password/forgot_password_controller.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
@@ -48,7 +48,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               const SizedBox(height: 20),
               const ForgotPasswordEmailInputTextFiled(),
               const SizedBox(height: 50),
-              Consumer<LoginController>(builder: (context, provider, child) {
+              Consumer<ForgotPasswordController>(builder: (context, provider, child) {
                 return RoundButton(
                   title: 'Continue',
                   loading: provider.loading,
