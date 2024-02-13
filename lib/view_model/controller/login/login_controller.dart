@@ -3,8 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 import '../../../utils/utils.dart';
