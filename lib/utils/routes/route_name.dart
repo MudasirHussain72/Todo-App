@@ -8,6 +8,8 @@ class RouteName {
   //dashboard
   static const String dashboardView = 'dashboard_view';
   static const String homeView = 'home_view';
+  static const String createGoalView = 'create_goal_view';
+  static const String calenderView = 'calender_view';
   static const String profileView = 'profile_view';
   static const String editProfileView = 'editProfile_view';
 }

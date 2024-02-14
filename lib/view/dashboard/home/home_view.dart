@@ -2,6 +2,7 @@ import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/res/component/logout_button.dart';
 import 'package:todo_app/res/component/network_image_widget.dart';
 import 'package:todo_app/utils/utils.dart';
@@ -9,14 +10,14 @@ import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
 import 'package:todo_app/view/dashboard/home/goals_screen.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
-class TodoHomeScreen extends StatefulWidget {
-  TodoHomeScreen({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<TodoHomeScreen> createState() => _TodoHomeScreenState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _TodoHomeScreenState extends State<TodoHomeScreen> {
+class _HomeViewState extends State<HomeView> {
   List taskList = [
     {
       'taskTitle': 'English Lession',

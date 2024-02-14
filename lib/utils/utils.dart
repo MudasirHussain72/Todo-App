@@ -40,7 +40,7 @@ class Utils {
       completionMessage = 'Almost done!';
       additionalMessage = 'You\'re almost there!';
     } else if (progressPercentage == 100) {
-      completionMessage = 'Congratulations! Task completed!';
+      completionMessage = 'Congratulations!\nTask completed!';
       additionalMessage = 'Great job!';
     } else {
       completionMessage = 'Invalid progress values';
@@ -84,7 +84,7 @@ class Utils {
           flushbarPosition: FlushbarPosition.TOP,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           padding: const EdgeInsets.all(15),
-          duration: const Duration(seconds: 3),
+          duration: const Duration(seconds: 2),
           borderRadius: BorderRadius.circular(10),
           backgroundColor: Colors.green.shade400,
           positionOffset: 20,
@@ -105,7 +105,7 @@ class Utils {
           flushbarPosition: FlushbarPosition.TOP,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           padding: const EdgeInsets.all(15),
-          duration: const Duration(seconds: 3),
+          duration: const Duration(seconds: 2),
           borderRadius: BorderRadius.circular(10),
           backgroundColor: Colors.red.shade400,
           positionOffset: 20,

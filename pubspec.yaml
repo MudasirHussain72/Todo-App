@@ -51,6 +51,7 @@ dependencies:
   action_slider: ^0.7.0
   animated_custom_dropdown: ^3.0.0
   google_sign_in: ^6.2.1
+  flutter_material_color_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

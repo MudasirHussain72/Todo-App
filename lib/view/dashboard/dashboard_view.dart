@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/res/colors.dart';
-import 'package:todo_app/view/dashboard/home/calendar_screen.dart';
-import 'package:todo_app/view/dashboard/home/new_goal_screen.dart';
-import 'package:todo_app/view/dashboard/home/todo_home_screen.dart';
+import 'package:todo_app/view/dashboard/calender/calendar_view.dart';
+import 'package:todo_app/view/dashboard/create_goal/create_goal_view.dart';
+import 'package:todo_app/view/dashboard/home/home_view.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DashboardView extends StatefulWidget {
-   DashboardView({Key? key}) : super(key: key);
+  DashboardView({Key? key}) : super(key: key);
 
   @override
   State<DashboardView> createState() => _DashboardViewState();
@@ -22,9 +22,9 @@ class _DashboardViewState extends State<DashboardView>
 
   List<Widget> _buildScren() {
     return [
-       TodoHomeScreen(),
-       const NewGoalScreen(),
-      const CalendarScreen(),
+      const HomeView(),
+      const CreateGoalView(),
+      const CalendarView(),
     ];
   }
 

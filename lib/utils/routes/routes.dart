@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/view/dashboard/dashboard_view.dart';
+import 'package:todo_app/view/dashboard/create_goal/create_goal_view.dart';
+import 'package:todo_app/view/dashboard/calender/calendar_view.dart';
+import 'package:todo_app/view/dashboard/home/home_view.dart';
 import 'package:todo_app/view/forgot_password/forgot_password_view.dart';
 import 'package:todo_app/view/login/login_view.dart';
 import 'package:todo_app/view/signup/signup_view.dart';
@@ -20,6 +23,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case RouteName.dashboardView:
         return MaterialPageRoute(builder: (_) => DashboardView());
+      case RouteName.homeView:
+        return MaterialPageRoute(builder: (_) => HomeView());
+      case RouteName.createGoalView:
+        return MaterialPageRoute(builder: (_) => const CreateGoalView());
+      case RouteName.calenderView:
+        return MaterialPageRoute(builder: (_) => const CalendarView());
       // case RouteName.profileScreen:
       //   return MaterialPageRoute(
       //       builder: (_) => ProfileScreen(

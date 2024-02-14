@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:todo_app/res/colors.dart';
-import 'package:todo_app/view/dashboard/home/goals_screen.dart';
+import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/model/task_model.dart';
 import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 
 // ignore: must_be_immutable
@@ -14,37 +14,15 @@ class GoalsDetailScreen extends StatefulWidget {
 }
 
 class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
-  // List taskList = [
-  //   {
-  //     'taskTitle': 'English Lession',
-  //     'subTitle': 'English C1',
-  //     'taskTime': 'from 7 to 7:50 pm',
-  //     'days': 'weekly'
-  //   },
-  //   {
-  //     'taskTitle': 'TXR Training',
-  //     'subTitle': 'Healthy Training',
-  //     'taskTime': 'at 9 pm',
-  //     'days': 'wekly'
-  //   },
-  //   {
-  //     'taskTitle': 'TXR Training',
-  //     'subTitle': 'Healthy Training',
-  //     'taskTime': 'at 9 pm',
-  //     'days': ''
-  //   },
-  //   {
-  //     'taskTitle': 'English Lession',
-  //     'subTitle': 'English C1',
-  //     'taskTime': 'from 7 to 7:50 pm',
-  //     'days': ''
-  //   },
-  // ];
   List<TaskModel> taskList = [
-    TaskModel('English Lession', 'English C1', 'from 7 to 7:50 pm',
-        AppColors.accentColor),
-    // TaskModel('User Interview', 'UI/UX Design', 'at 4 pm', Colors.purple),
-    // TaskModel('TXR Training', 'Healthy Training', 'at 9 pm', Colors.orange),
+    TaskModel(
+      'English C1',
+      '093947',
+      '2/14/2024',
+      'Developer',
+      ['https://youtube.com', 'https://youtube.com' 'https://youtube.com'],
+      '2/14/2024',
+    ),
   ];
 
   @override
@@ -288,7 +266,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                             const Spacer(),
                                             Text(
                                               taskList[index]
-                                                  .duration
+                                                  .endDate
                                                   .toString(),
                                               style: const TextStyle(
                                                   fontSize: 17,
@@ -303,9 +281,10 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              taskList[index]
-                                                  .taskSubTitle
-                                                  .toString(),
+                                              // taskList[index]
+                                              //     .taskSubTitle
+                                              //     .toString(),
+                                              'English Lesson',
                                               style: const TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w600,

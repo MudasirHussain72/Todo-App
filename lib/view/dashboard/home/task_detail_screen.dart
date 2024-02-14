@@ -3,6 +3,7 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:todo_app/model/task_model.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   TaskModel? taskDetail;
@@ -58,7 +59,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: widget.taskDetail!.taskColor,
+                        // color: widget.taskDetail!.taskColor,
+                        color: Color(
+                            int.parse(widget.taskDetail!.taskColor.toString())),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: SingleChildScrollView(
@@ -79,7 +82,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      widget.taskDetail!.duration.toString(),
+                                      widget.taskDetail!.endDate.toString(),
                                       style: const TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -108,10 +111,11 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        widget.taskDetail!.taskSubTitle
-                                            .toString(),
-                                        style: const TextStyle(
+                                      const Text(
+                                        // widget.taskDetail!.taskSubTitle
+                                        //     .toString(),
+                                        'English Lesson',
+                                        style: TextStyle(
                                             fontSize: 20, color: Colors.white),
                                       ),
                                       Text(
@@ -144,10 +148,14 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               child: ActionSlider.standard(
-                                backgroundColor: widget.taskDetail!.taskColor!
+                                backgroundColor: Color(int.parse(widget
+                                        .taskDetail!.taskColor
+                                        .toString()))
                                     .withOpacity(0.4),
-                                toggleColor: widget.taskDetail!.taskColor!
-                                  ..withOpacity(0.3),
+                                toggleColor: Color(int.parse(widget
+                                        .taskDetail!.taskColor
+                                        .toString()))
+                                    .withOpacity(0.3),
                                 rolling: true,
                                 icon: const Icon(
                                   Icons.arrow_forward_ios,
@@ -203,7 +211,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         padding: const EdgeInsets.only(
                             left: 20, right: 20, bottom: 5),
                         child: Text(
-                          widget.taskDetail!.duration.toString(),
+                          widget.taskDetail!.endDate.toString(),
                           maxLines: 2,
                           style: const TextStyle(
                             fontSize: 18,
@@ -267,19 +275,20 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             left: 20, top: 12, bottom: 12),
                         child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 5),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.taskDetail!.taskSubTitle.toString(),
-                                    style: const TextStyle(
+                                    // widget.taskDetail!.taskSubTitle.toString(),
+                                    'English Lesson',
+                                    style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  const SizedBox(height: 5),
-                                  const Text(
+                                  SizedBox(height: 5),
+                                  Text(
                                     '17/20',
                                     style: TextStyle(
                                         fontSize: 20,
@@ -301,7 +310,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   '11%',
                                 ),
 
-                                progressColor: widget.taskDetail!.taskColor,
+                                progressColor: Color(int.parse(
+                                    widget.taskDetail!.taskColor.toString())),
                               ),
                             ),
                           ],
@@ -317,13 +327,4 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
       ),
     );
   }
-}
-
-class TaskModel {
-  String? taskTitle;
-  String? taskSubTitle;
-  String? duration;
-  Color? taskColor;
-
-  TaskModel(this.taskTitle, this.taskSubTitle, this.duration, this.taskColor);
 }

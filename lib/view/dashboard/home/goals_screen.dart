@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
 
 class GoalsScreen extends StatefulWidget {
@@ -136,11 +137,3 @@ class _GoalsScreenState extends State<GoalsScreen> {
   }
 }
 
-class GoalsModel {
-  String? goalTitle;
-  String? goalCompleted;
-  String? percentage;
-  String? goalColor;
-
-  GoalsModel(this.goalTitle, this.goalCompleted, this.percentage, this.goalColor);
-}
