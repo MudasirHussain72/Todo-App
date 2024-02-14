@@ -1,10 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/model/user_model.dart';
 import 'package:todo_app/repository/signup_repository.dart';
+import 'package:todo_app/utils/routes/route_name.dart';
+import 'package:todo_app/view_model/services/session_controller.dart';
 import '../../../utils/utils.dart';
 
 class SignupController with ChangeNotifier {
@@ -86,6 +92,85 @@ class SignupController with ChangeNotifier {
     } catch (e) {
       setLoading(false);
       Utils.flushBarErrorMessage(e.toString(), context);
+    }
+  }
+
+  //for checking user exists or not?
+  static Future<bool> userExists() async {
+    return (await FirebaseFirestore.instance
+            .collection('User')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get())
+        .exists;
+  }
+
+  // google sig  in
+  Future<void> loginWithGoogle(BuildContext context) async {
+    setLoading(true);
+    try {
+      //To check internet connectivity
+      await InternetAddress.lookup('firebase.google.com');
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      if (googleAuth == null) {
+        return;
+      }
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((value) async {
+        SessionController().user.uid = value.user!.uid.toString();
+        if (await userExists()) {
+          CollectionReference ref =
+              FirebaseFirestore.instance.collection('User');
+          ref.doc(value.user!.uid.toString()).get().then((value) async {
+            setLoading(false);
+            await SessionController.saveUserInPreference(value.data());
+            await SessionController.getUserFromPreference();
+            emailController.clear();
+            passwordController.clear();
+            setLoading(false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, RouteName.dashboardView, (route) => false);
+          });
+        } else {
+          UserModel userModel = UserModel(
+            name: value.user!.displayName.toString(),
+            email: value.user!.email,
+            uid: value.user!.uid,
+            onlineStatus: DateTime.now().microsecondsSinceEpoch.toString(),
+            isNotificationsEnabled: true,
+          );
+          // saving user data in database
+          await SignUpRepository().createUser(value.user!.uid, userModel);
+          CollectionReference ref =
+              FirebaseFirestore.instance.collection('User');
+          await ref.doc(value.user!.uid.toString()).get().then((value) async {
+            setLoading(false);
+            await SessionController.saveUserInPreference(value.data());
+            await SessionController.getUserFromPreference();
+            emailController.clear();
+            passwordController.clear();
+            setLoading(false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, RouteName.dashboardView, (route) => false);
+          });
+        }
+      }).onError((error, stackTrace) {
+        setLoading(false);
+        Utils.toastMessage(error.toString());
+      });
+    } catch (e) {
+      setLoading(false);
+      Utils.toastMessage(e.toString());
+      if (kDebugMode) {
+        print("Error: $e");
+      }
+      return;
     }
   }
 }

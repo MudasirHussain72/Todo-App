@@ -19,7 +19,7 @@ class Routes {
       case RouteName.forgotView:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case RouteName.dashboardView:
-        return MaterialPageRoute(builder: (_) => const DashboardView());
+        return MaterialPageRoute(builder: (_) => DashboardView());
       // case RouteName.profileScreen:
       //   return MaterialPageRoute(
       //       builder: (_) => ProfileScreen(

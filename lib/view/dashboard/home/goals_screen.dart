@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:todo_app/view/dashboard/home_view/goal_detail_screen.dart';
+import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
@@ -24,7 +24,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-          appBar: AppBar(
+      appBar: AppBar(
         title:  const Text(
           'Goals',
           style: TextStyle(

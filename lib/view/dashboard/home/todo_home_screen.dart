@@ -2,9 +2,15 @@ import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:todo_app/res/component/logout_button.dart';
+import 'package:todo_app/res/component/network_image_widget.dart';
+import 'package:todo_app/utils/utils.dart';
+import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
+import 'package:todo_app/view/dashboard/home/goals_screen.dart';
+import 'package:todo_app/view_model/services/session_controller.dart';
 
 class TodoHomeScreen extends StatefulWidget {
-  const TodoHomeScreen({super.key});
+  TodoHomeScreen({super.key});
 
   @override
   State<TodoHomeScreen> createState() => _TodoHomeScreenState();
@@ -25,19 +31,9 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
       'color': Colors.orange
     },
   ];
-  List goalList = [
-    {
-      'goalitle': 'UI/UX Design',
-      'goalCompleted': '10/20',
-      'percentage': '50',
-      'color': Colors.green
-    },
-    {
-      'goalitle': 'English C1',
-      'goalCompleted': '14/120',
-      'percentage': '11',
-      'color': Colors.purple
-    },
+  List<GoalsModel> goalList = [
+    GoalsModel('English C1', '14/120', '11', '004c00'),
+    GoalsModel('English C1', '14/120', '11', '004c00'),
   ];
 
   bool isExpandedContainer = false;
@@ -46,6 +42,8 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final messages = Utils().showProgressMessages(1, 10);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -58,33 +56,26 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
                   width: size.width * 0.9,
                   child: Row(
                     children: [
-                      Container(
-                        height: 65,
-                        width: 65,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(width: 0.5, color: Colors.grey)),
-                        child: Image.asset(
-                          'assets/images/google_logo.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      NetworkImageWidget(
+                          height: 50,
+                          width: 50,
+                          imageUrl:
+                              SessionController().user.profileImage.toString()),
 
                       // name column
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Hello, Helen!',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.grey),
+                              'Hello, ${SessionController().user.name.toString()}',
+                              style: const TextStyle(
+                                  fontSize: 20, color: Colors.grey),
                             ),
                             Text(
-                              'Nice to see you!',
-                              style: TextStyle(
+                              Utils().showMorningMessage(context),
+                              style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -93,9 +84,20 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
 
                       const Spacer(),
                       // right icon
-                      const Icon(
-                        Icons.menu,
-                        size: 35,
+                      IconButton(
+                        padding: const EdgeInsets.all(0),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Scaffold(
+                                    body: Center(child: LogoutButtonWidget())),
+                              ));
+                        },
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 35,
+                        ),
                       )
                     ],
                   ),
@@ -111,35 +113,30 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              children: [
-                                Text(''),
-                                Text(
-                                  '10/20',
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                            Text(
+                              '1/10',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  'Halfway!',
-                                  style: TextStyle(
+                                  messages[0],
+                                  style: const TextStyle(
                                     fontSize: 20,
                                   ),
                                 ),
                                 Text(
-                                  'You hide beautifully!',
-                                  style: TextStyle(
+                                  messages[1],
+                                  style: const TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
@@ -165,7 +162,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
                           animation: true,
                           lineHeight: 20.0,
                           animationDuration: 2500,
-                          percent: 0.8,
+                          percent: double.parse('${1 / 10 * 1}'),
                           backgroundColor: Colors.grey[200]!,
                           curve: Curves.easeInOut,
                           barRadius: const Radius.circular(20),
@@ -237,14 +234,26 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
                             onTap: () {
                               debugPrint('index: $index');
                               setState(() {
-                                if (index == animatedContainerIndex) {}
-                                isExpandedContainer = !isExpandedContainer;
+                                if (animatedContainerIndex == index &&
+                                    isExpandedContainer) {
+                                  // Navigate to new screen without closing the expanded container
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GoalsScreen(),
+                                    ),
+                                  );
+                                } else {
+                                  isExpandedContainer = true;
+                                  animatedContainerIndex = index;
+                                }
                               });
                             },
                             child: AnimatedContainer(
                               duration: const Duration(seconds: 1),
                               curve: Curves.easeInOut,
-                              height: isExpandedContainer ? 260 : 100,
+                              height:
+                                  animatedContainerIndex == index ? 260 : 100,
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 color: isExpandedContainer
@@ -492,7 +501,13 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const GoalsScreen(),
+                              ));
+                        },
                         child: Text(
                           'See all',
                           style:
@@ -514,69 +529,80 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Container(
-                              width: size.width * 0.7,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color: Colors.grey)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, top: 12),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 5),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                goalList[index]['goalitle']
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                goalList[index]['goalCompleted']
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.grey),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 10),
-                                          child: CircularPercentIndicator(
-                                            radius: 40.0,
-                                            lineWidth: 8.0,
-                                            percent: double.parse(
-                                                    goalList[index]
-                                                            ['percentage']
-                                                        .toString()) /
-                                                100,
-                                            center: Text(
-                                              '${goalList[index]['percentage'].toString()}%',
+                            child: GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => GoalsDetailScreen(
+                                            goalsData: goalList[index],
+                                          ))),
+                              child: Container(
+                                width: size.width * 0.7,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: Colors.grey)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, top: 12),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 5),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  goalList[index]
+                                                      .goalTitle
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  goalList[index]
+                                                      .goalCompleted
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
                                             ),
-                                            progressColor: goalList[index]
-                                                ['color'],
                                           ),
-                                        ),
-                                      ],
+                                          const Spacer(),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
+                                            child: CircularPercentIndicator(
+                                              radius: 40.0,
+                                              lineWidth: 8.0,
+                                              percent: double.parse(
+                                                      goalList[index]
+                                                          .percentage
+                                                          .toString()) /
+                                                  100,
+                                              center: Text(
+                                                '${goalList[index].percentage.toString()}%',
+                                              ),
+                                              progressColor: Color(int.parse(
+                                                  '0xff${goalList[index].goalColor}')),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );

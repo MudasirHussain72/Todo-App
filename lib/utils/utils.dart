@@ -11,15 +11,43 @@ class Utils {
       return 'Good Morning';
     }
     if (now.hour <= 12 || now.hour < 16) {
-      return "goodAfterNoon";
+      return "Good After Noon";
     }
     if (now.hour <= 21 || now.hour < 24) {
-      return 'goodEvening';
+      return 'Good Evening';
     }
     if (now.hour <= 20 || now.hour < 3) {
-      return 'goodEvening';
+      return 'Good Evening';
     }
     return '';
+  }
+
+  List<String> showProgressMessages(int completedCount, int totalCount) {
+    double progressPercentage = (completedCount / totalCount) * 100;
+    String completionMessage;
+    String additionalMessage;
+
+    if (progressPercentage >= 0 && progressPercentage < 25) {
+      completionMessage = 'Just getting started!';
+      additionalMessage = 'Keep going!';
+    } else if (progressPercentage >= 25 && progressPercentage < 50) {
+      completionMessage = 'Making progress!';
+      additionalMessage = 'You\'re doing well!';
+    } else if (progressPercentage >= 50 && progressPercentage < 75) {
+      completionMessage = 'Halfway there!';
+      additionalMessage = 'Keep it up!';
+    } else if (progressPercentage >= 75 && progressPercentage < 100) {
+      completionMessage = 'Almost done!';
+      additionalMessage = 'You\'re almost there!';
+    } else if (progressPercentage == 100) {
+      completionMessage = 'Congratulations! Task completed!';
+      additionalMessage = 'Great job!';
+    } else {
+      completionMessage = 'Invalid progress values';
+      additionalMessage = '';
+    }
+
+    return [completionMessage, additionalMessage];
   }
 
   //helper functions to validate email
