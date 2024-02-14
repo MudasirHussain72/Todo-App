@@ -33,8 +33,22 @@ class _HomeViewState extends State<HomeView> {
     },
   ];
   List<GoalsModel> goalList = [
-    GoalsModel('English C1', '14/120', '11', '004c00'),
-    GoalsModel('English C1', '14/120', '11', '004c00'),
+    GoalsModel(
+      'English C1',
+      false,
+      1.toString(),
+      '004c00',
+      'desc',
+      [],
+    ),
+    GoalsModel(
+      'English C1',
+      false,
+      1.toString(),
+      '004c00',
+      'desc',
+      [],
+    ),
   ];
 
   bool isExpandedContainer = false;
@@ -120,7 +134,7 @@ class _HomeViewState extends State<HomeView> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               '1/10',
                               style: TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold),
@@ -241,7 +255,7 @@ class _HomeViewState extends State<HomeView> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => GoalsScreen(),
+                                      builder: (context) => const GoalsScreen(),
                                     ),
                                   );
                                 } else {
@@ -568,10 +582,11 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                                 const SizedBox(height: 5),
                                                 Text(
-                                                  goalList[index]
-                                                      .goalCompleted
-                                                      .toString(),
-                                                  style: const TextStyle(
+                                                  // goalList[index]
+                                                  //     .isCompleted
+                                                  //     .toString(),
+                                                  'completed',
+                                                  style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight:
                                                           FontWeight.w600,

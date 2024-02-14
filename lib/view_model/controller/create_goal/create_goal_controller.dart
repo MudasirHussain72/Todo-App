@@ -1,6 +1,9 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/view_model/services/session_controller.dart';
 import '../../../utils/utils.dart';
 
 class CreateGoalController with ChangeNotifier {
@@ -96,7 +99,27 @@ class CreateGoalController with ChangeNotifier {
   // Function for createGoal
   void createGoal(BuildContext context) async {
     setLoading(true);
+    var goalData = GoalsModel(
+      goalNameController.text.trim(),
+      false,
+      0.toString(),
+      selectedGoalColorCode,
+      goalDescController.text.trim(),
+      tasksList,
+    );
     try {
+      FirebaseFirestore.instance
+          .collection('User')
+          .doc(SessionController().user.uid)
+          .collection('gaols')
+          .doc()
+          .set(goalData.toJson())
+          .then((value) {
+        goalNameController.clear();
+        goalDescController.clear();
+        tasksList.clear();
+        Utils.flushBarDoneMessage('Goal Created', context);
+      });
       setLoading(false);
     } catch (e) {
       setLoading(false);

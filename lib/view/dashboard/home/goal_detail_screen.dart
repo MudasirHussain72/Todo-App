@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo_app/model/goal_model.dart';
-import 'package:todo_app/model/task_model.dart';
 import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 
 // ignore: must_be_immutable
@@ -98,7 +97,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 0),
                           child: Text(
-                            widget.goalsData!.goalCompleted.toString(),
+                            widget.goalsData!.isCompleted.toString(),
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,

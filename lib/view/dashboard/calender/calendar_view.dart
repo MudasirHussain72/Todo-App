@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/model/task_model.dart';
 import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 
@@ -43,21 +44,11 @@ class _CalendarViewState extends State<CalendarView> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'Calendar',
           style: TextStyle(
               fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 30,
-            ),
-          ),
         ),
         actions: const [
           Padding(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
 
@@ -27,12 +27,16 @@ class _CreateTaskAppbarState extends State<CreateTaskAppbar> {
             fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
       ),
       leading: Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.close, color: Colors.black),
-        ),
-      ),
+          padding: const EdgeInsets.only(left: 20),
+          child: Consumer<CreateGoalController>(
+            builder: (context, value, child) => GestureDetector(
+              onTap: () {
+                value.tasksLinks.clear();
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.close, color: Colors.black),
+            ),
+          )),
       actions: [
         Padding(
             padding: const EdgeInsets.only(right: 20),

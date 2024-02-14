@@ -3,7 +3,7 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:todo_app/model/goal_model.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   TaskModel? taskDetail;
