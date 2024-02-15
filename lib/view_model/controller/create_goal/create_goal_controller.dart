@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
+import 'package:uuid/uuid.dart';
 import '../../../utils/utils.dart';
 
 class CreateGoalController with ChangeNotifier {
@@ -27,10 +27,22 @@ class CreateGoalController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clearTaskList() async {
+    _tasksList.clear();
+    log(_tasksList.length.toString());
+    notifyListeners();
+  }
+
   List<String> _tasksLinks = [];
   List<String> get tasksLinks => _tasksLinks;
   Future<void> addTaskLinks(String value) async {
     _tasksLinks.add(value);
+    log(_tasksLinks.length.toString());
+    notifyListeners();
+  }
+
+  Future<void> clearTaskLinks() async {
+    _tasksLinks.clear();
     log(_tasksLinks.length.toString());
     notifyListeners();
   }
@@ -66,6 +78,29 @@ class CreateGoalController with ChangeNotifier {
     notifyListeners();
   }
 
+  String _goalId = Uuid().v4();
+  String get goalId => _goalId;
+  setNewValueToGoalId() {
+    _goalId = Uuid().v4();
+    log(_goalId);
+    notifyListeners();
+  }
+
+  // var taskId = Uuid().v4();
+  String _taskId = '';
+  String get taskId => _taskId;
+  setTaskId() {
+    _taskId = Uuid().v4();
+    log(_taskId);
+    notifyListeners();
+  }
+
+  resetTaskId() {
+    _taskId = '';
+    log(_taskId);
+    notifyListeners();
+  }
+
   // Method to show the dialog
   Future<void> addLinkDialog(BuildContext context) async {
     TextEditingController linkController = TextEditingController();
@@ -97,7 +132,7 @@ class CreateGoalController with ChangeNotifier {
   }
 
   // Function for createGoal
-  void createGoal(BuildContext context) async {
+  Future<void> createGoal(BuildContext context) async {
     setLoading(true);
     var goalData = GoalsModel(
       goalNameController.text.trim(),
@@ -106,18 +141,19 @@ class CreateGoalController with ChangeNotifier {
       selectedGoalColorCode,
       goalDescController.text.trim(),
       tasksList,
+      _taskId,
     );
     try {
       FirebaseFirestore.instance
           .collection('User')
           .doc(SessionController().user.uid)
-          .collection('gaols')
-          .doc()
+          .collection('goals')
+          .doc(_goalId)
           .set(goalData.toJson())
           .then((value) {
         goalNameController.clear();
         goalDescController.clear();
-        tasksList.clear();
+        clearTaskList();
         Utils.flushBarDoneMessage('Goal Created', context);
       });
       setLoading(false);

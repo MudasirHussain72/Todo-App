@@ -40,6 +40,7 @@ class _HomeViewState extends State<HomeView> {
       '004c00',
       'desc',
       [],
+      '004c00',
     ),
     GoalsModel(
       'English C1',
@@ -48,6 +49,7 @@ class _HomeViewState extends State<HomeView> {
       '004c00',
       'desc',
       [],
+      '004c00',
     ),
   ];
 

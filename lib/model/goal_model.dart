@@ -5,6 +5,8 @@ class GoalsModel {
   String? percentage;
   String? goalColor;
   List<TaskModel>? taskList;
+  String? goalId;
+
 
   GoalsModel(
     this.goalTitle,
@@ -13,6 +15,7 @@ class GoalsModel {
     this.goalColor,
     this.goalDescription,
     this.taskList,
+    this.goalId,
   );
 
   GoalsModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +24,7 @@ class GoalsModel {
     isCompleted = json['isCompleted'];
     percentage = json['percentage'];
     goalColor = json['goalColor'];
+    goalId = json['goalId'];
     if (json['taskList'] != null) {
       taskList = <TaskModel>[];
       json['taskList'].forEach((v) {
@@ -36,6 +40,7 @@ class GoalsModel {
     data['isCompleted'] = isCompleted;
     data['percentage'] = percentage;
     data['goalColor'] = goalColor;
+    data['goalId'] = goalId;
     if (taskList != null) {
       data['taskList'] = taskList!.map((v) => v.toJson()).toList();
     }
@@ -49,6 +54,11 @@ class TaskModel {
   String? endDate;
   String? taskColor;
   String? goalType;
+  String? goalName;
+  String? goalDescription;
+  bool? isCompleted;
+  String? goalId;
+  String? taskId;
   List<String>? links;
 
   TaskModel(
@@ -58,6 +68,11 @@ class TaskModel {
     this.goalType,
     this.links,
     this.startDate,
+    this.goalName,
+    this.goalDescription,
+    this.isCompleted,
+    this.goalId,
+    this.taskId,
   );
 
   TaskModel.fromJson(Map<String, dynamic> json) {
@@ -66,6 +81,11 @@ class TaskModel {
     endDate = json['endDate'];
     taskColor = json['taskColor'];
     goalType = json['goalType'];
+    goalName = json['goalName'];
+    goalDescription = json['goalDescription'];
+    isCompleted = json['isCompleted'];
+    goalId = json['goalId'];
+    taskId = json['taskId'];
     links = json['links']?.cast<String>();
   }
 
@@ -76,7 +96,12 @@ class TaskModel {
     data['endDate'] = endDate;
     data['taskColor'] = taskColor;
     data['goalType'] = goalType;
+    data['goalName'] = goalName;
+    data['goalDescription'] = goalDescription;
+    data['isCompleted'] = isCompleted;
     data['links'] = links;
+    data['goalId'] = goalId;
+    data['taskId'] = taskId;
     return data;
   }
 }

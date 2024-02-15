@@ -9,20 +9,23 @@ class EnterGoalNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CreateGoalController>(builder: (context, provider, child) {
-      return InputTextField(
-        myController: provider.goalNameController,
-        focusNode: provider.goalNameFocusNode,
-        onFiledSubmittedValue: (newValue) {
-          Utils.fieldFocus(
-              context, provider.goalNameFocusNode, provider.goalDescFocusNode);
-        },
-        keyBoardType: TextInputType.text,
-        hint: 'Enter goal name',
-        onValidator: (value) {
-          return null;
-        },
-      );
-    });
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Consumer<CreateGoalController>(builder: (context, provider, child) {
+        return InputTextField(
+          myController: provider.goalNameController,
+          focusNode: provider.goalNameFocusNode,
+          onFiledSubmittedValue: (newValue) {
+            Utils.fieldFocus(
+                context, provider.goalNameFocusNode, provider.goalDescFocusNode);
+          },
+          keyBoardType: TextInputType.text,
+          hint: 'Enter goal name',
+          onValidator: (value) {
+            return null;
+          },
+        );
+      }),
+    );
   }
 }

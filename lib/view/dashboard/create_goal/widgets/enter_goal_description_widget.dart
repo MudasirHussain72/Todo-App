@@ -8,18 +8,21 @@ class EnterGoaDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CreateGoalController>(builder: (context, provider, child) {
-      return InputTextField(
-        maxLines: 10,
-        myController: provider.goalDescController,
-        focusNode: provider.goalDescFocusNode,
-        onFiledSubmittedValue: (newValue) {},
-        keyBoardType: TextInputType.text,
-        hint: 'Enter goal description',
-        onValidator: (value) {
-          return null;
-        },
-      );
-    });
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Consumer<CreateGoalController>(builder: (context, provider, child) {
+        return InputTextField(
+          maxLines: 10,
+          myController: provider.goalDescController,
+          focusNode: provider.goalDescFocusNode,
+          onFiledSubmittedValue: (newValue) {},
+          keyBoardType: TextInputType.text,
+          hint: 'Enter goal description',
+          onValidator: (value) {
+            return null;
+          },
+        );
+      }),
+    );
   }
 }

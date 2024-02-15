@@ -41,7 +41,9 @@ class _CreateGoalViewAppbarState extends State<CreateGoalViewAppbar> {
                     Utils.flushBarErrorMessage(
                         'Add your tasks to create your goal', context);
                   } else {
-                    provider.createGoal(context);
+                    provider
+                        .createGoal(context)
+                        .then((value) => provider.setNewValueToGoalId());
                   }
                 },
                 child: const Text(

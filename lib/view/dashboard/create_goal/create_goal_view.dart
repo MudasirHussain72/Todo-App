@@ -21,19 +21,16 @@ class _CreateGoalViewState extends State<CreateGoalView> {
       body: const SafeArea(
         child: SingleChildScrollView(
           child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 40),
-                  EnterGoalNameWidget(),
-                  EnterGoaDescriptionWidget(),
-                  ChooseColorWidget(),
-                  AddTasksWidget(),
-                  ShowAddedTasksWidget(),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 40),
+                EnterGoalNameWidget(),
+                EnterGoaDescriptionWidget(),
+                ChooseColorWidget(),
+                AddTasksWidget(),
+                ShowAddedTasksWidget(),
+              ],
             ),
           ),
         ),

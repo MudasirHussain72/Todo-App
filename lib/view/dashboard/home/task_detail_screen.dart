@@ -7,44 +7,30 @@ import 'package:todo_app/model/goal_model.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   TaskModel? taskDetail;
-  TaskDetailsScreen({super.key, this.taskDetail});
+  final int goalTasksCompletedCount, goalTasksTotalCount;
+
+  TaskDetailsScreen(
+      {super.key,
+      this.taskDetail,
+      required this.goalTasksCompletedCount,
+      required this.goalTasksTotalCount});
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
 }
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
-  bool isExpandedContainer = false;
-  int animatedContainerIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(
-          'Task Details',
-          style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
-        ),
-        leading: Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 30,
-            ),
-          ),
-        ),
-        actions: [
+        title: const Text('Task Details'),
+        actions: const [
           Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.edit,
-            ),
+            child: Icon(Icons.edit),
           )
         ],
       ),
@@ -53,43 +39,43 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: size.width * 0.9,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Container(
                       decoration: BoxDecoration(
                         color: _parseColor(widget.taskDetail!.taskColor!),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         child: Column(
                           children: [
                             // Time and edit row
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.timer_outlined,
                                     color: Colors.white,
                                     size: 30,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 5),
+                                    padding: const EdgeInsets.only(left: 5),
                                     child: Text(
                                       widget.taskDetail!.endDate.toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   GestureDetector(
                                     onTap: () {},
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.edit_outlined,
                                       color: Colors.white,
                                       size: 30,
@@ -100,7 +86,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             ),
                             // Task name row
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -111,40 +97,38 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        // widget.taskDetail!.taskSubTitle
-                                        //     .toString(),
-                                        'English Lesson',
-                                        style: TextStyle(
+                                        widget.taskDetail!.goalName.toString(),
+                                        style: const TextStyle(
                                             fontSize: 20, color: Colors.white),
                                       ),
                                       Text(
                                         widget.taskDetail!.taskTitle.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 25,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
-                                  Spacer(),
-                                  Icon(
-                                    Icons.remove_red_eye_rounded,
-                                    color: Colors.white,
-                                    size: 50,
-                                  ),
-                                  SizedBox(width: 20),
-                                  Icon(
-                                    Icons.remove_red_eye_rounded,
-                                    color: Colors.white,
-                                    size: 50,
-                                  ),
+                                  const Spacer(),
+                                  // const Icon(
+                                  //   Icons.remove_red_eye_rounded,
+                                  //   color: Colors.white,
+                                  //   size: 50,
+                                  // ),
+                                  // const SizedBox(width: 20),
+                                  // const Icon(
+                                  //   Icons.remove_red_eye_rounded,
+                                  //   color: Colors.white,
+                                  //   size: 50,
+                                  // ),
                                 ],
                               ),
                             ),
 
                             // Action slider
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               child: ActionSlider.standard(
                                 backgroundColor:
@@ -154,15 +138,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     _parseColor(widget.taskDetail!.taskColor!)
                                         .withOpacity(0.3),
                                 rolling: true,
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.arrow_forward_ios,
                                   color: Colors.white,
                                 ),
-                                loadingIcon: Icon(
+                                loadingIcon: const Icon(
                                   Icons.check,
                                   color: Colors.white,
                                 ),
-                                child: Text(
+                                child: const Text(
                                   'Drag to mark done',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -172,7 +156,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 action: (controller) async {
                                   controller
                                       .loading(); //starts loading animation
-                                  await Future.delayed(Duration(seconds: 3));
+                                  await Future.delayed(
+                                      const Duration(seconds: 3));
                                   controller
                                       .success(); //starts success animation
                                 },
@@ -192,7 +177,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(
                             left: 20, right: 20, top: 20, bottom: 5),
                         child: Text(
@@ -204,23 +189,23 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.only(left: 20, right: 20, bottom: 5),
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 5),
                         child: Text(
                           widget.taskDetail!.endDate.toString(),
                           maxLines: 2,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             color: Colors.grey,
                           ),
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 20),
                         child: GestureDetector(
                           onTap: () {},
-                          child: Text(
+                          child: const Text(
                             'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
                             // maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -235,7 +220,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   ),
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Goals progress
                 SizedBox(
@@ -245,7 +230,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     children: [
                       SizedBox(
                         width: size.width * 0.48,
-                        child: Text(
+                        child: const Text(
                           'Goal',
                           style: TextStyle(
                             fontSize: 20,
@@ -256,7 +241,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Goals progress horizontal listview
                 Container(
                   width: size.width * 0.9,
@@ -267,25 +252,25 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 20, top: 12, bottom: 12),
+                        padding: const EdgeInsets.only(
+                            left: 20, top: 12, bottom: 12),
                         child: Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(bottom: 5),
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    // widget.taskDetail!.taskSubTitle.toString(),
-                                    'English Lesson',
-                                    style: TextStyle(
+                                    widget.taskDetail!.goalName.toString(),
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
-                                    '17/20',
-                                    style: TextStyle(
+                                    '${widget.goalTasksCompletedCount}/${widget.goalTasksTotalCount}',
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.grey),
@@ -293,20 +278,54 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 ],
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Padding(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 10),
                               child: CircularPercentIndicator(
                                 radius: 40.0,
                                 lineWidth: 8.0,
-                                // percent: double.parse(goalList[index]['percentage'].toString()) / 100,
-                                percent: 0.11,
+                                percent: widget.goalTasksCompletedCount /
+                                    widget.goalTasksTotalCount,
                                 center: Text(
-                                  '11%',
+                                  '${((widget.goalTasksCompletedCount / widget.goalTasksTotalCount) * 100).toStringAsFixed(0)}%',
+                                  style: const TextStyle(fontSize: 12),
                                 ),
-
                                 progressColor:
                                     _parseColor(widget.taskDetail!.taskColor!),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        width: size.width * 0.9,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20, right: 20, top: 20, bottom: 5),
+                              child: Text(
+                                'Description',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20),
+                              child: Text(
+                                widget.taskDetail!.goalDescription.toString(),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/res/colors.dart';
+import 'package:todo_app/res/theme/fonts.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
 
 class SelectStartDateWidget extends StatefulWidget {
@@ -43,16 +44,16 @@ class _SelectStartDateWidgetState extends State<SelectStartDateWidget> {
                 children: [
                   Text(
                     value.startDateController.text,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                        fontSize: 16,
+                        color: AppColors.hintColor,
+                        fontFamily: AppFonts.poppinsRegular),
                   ),
                   const Spacer(),
                   Icon(
                     Icons.calendar_month_outlined,
-                    color: Colors.grey[400],
-                    size: 30,
+                    color: AppColors.hintColor,
+                    size: 22,
                   )
                 ],
               ),

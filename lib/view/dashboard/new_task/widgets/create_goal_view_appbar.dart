@@ -31,7 +31,7 @@ class _CreateTaskAppbarState extends State<CreateTaskAppbar> {
           child: Consumer<CreateGoalController>(
             builder: (context, value, child) => GestureDetector(
               onTap: () {
-                value.tasksLinks.clear();
+                value.clearTaskLinks();
                 Navigator.pop(context);
               },
               child: const Icon(Icons.close, color: Colors.black),
@@ -58,18 +58,27 @@ class _CreateTaskAppbarState extends State<CreateTaskAppbar> {
                           Utils.flushBarErrorMessage(
                               'Select goal type', context);
                         } else {
+                          provider.setTaskId();
+
                           provider
                               .addTaskToTaskList(
-                            TaskModel(
-                              provider.taskNameController.text.trim(),
-                              provider.selectedTaskColorCode,
-                              provider.endDateController.text.trim(),
-                              provider.selectedGoalType,
-                              provider.tasksLinks,
-                              provider.startDateController.text.trim(),
-                            ),
-                          )
+                                TaskModel(
+                                  provider.taskNameController.text.trim(),
+                                  provider.selectedTaskColorCode,
+                                  provider.endDateController.text.trim(),
+                                  provider.selectedGoalType,
+                                  provider.tasksLinks,
+                                  provider.startDateController.text.trim(),
+                                  provider.goalNameController.text.trim(),
+                                  provider.goalDescController.text.trim(),
+                                  false,
+                                  provider.goalId,
+                                  provider.taskId,
+                                ),
+                              )
+                              .then((value) => provider.resetTaskId())
                               .then((value) {
+                            provider.clearTaskLinks();
                             provider.taskNameController.clear();
                             provider.startDateController.text =
                                 'Beginning date';

@@ -18,14 +18,15 @@ class ChooseGoalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         const Text(
           'Goal',
           style: TextStyle(
               fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 6),
         SizedBox(
           width: size.width * 0.9,
           child: CustomDropdown<Goal>.search(

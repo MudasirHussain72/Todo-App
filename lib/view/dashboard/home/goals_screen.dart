@@ -12,12 +12,12 @@ class GoalsScreen extends StatefulWidget {
 
 class _GoalsScreenState extends State<GoalsScreen> {
   List<GoalsModel> goalList = [
-    GoalsModel('UI/UX Design', false, '50', '073763', '', []),
-    GoalsModel('English C1', false, '11', '004c00', '', []),
-    GoalsModel('Healthy Training',false, '50', 'cc3333', '', []),
-    GoalsModel('20 Books in a year', false, '11', 'a68083', '', []),
-    GoalsModel('Travling Goals', false, '50', 'f1c1af', '', []),
-    GoalsModel('Healthy Eating', false, '11', '9f8170', '', [])
+    GoalsModel('UI/UX Design', false, '50', '073763', '', [], '004c00'),
+    GoalsModel('English C1', false, '11', '004c00', '', [], '004c00'),
+    GoalsModel('Healthy Training', false, '50', 'cc3333', '', [], '004c00'),
+    GoalsModel('20 Books in a year', false, '11', 'a68083', '', [], '004c00'),
+    GoalsModel('Travling Goals', false, '50', 'f1c1af', '', [], '004c00'),
+    GoalsModel('Healthy Eating', false, '11', '9f8170', '', [], '004c00'),
   ];
 
   @override

@@ -1,8 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_app/model/goal_model.dart';
-import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
+import 'package:todo_app/res/component/task_tile_widget.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
 final kToday = DateTime.now();
@@ -38,7 +39,7 @@ class _CalendarViewState extends State<CalendarView> {
     FirebaseFirestore.instance
         .collection('User')
         .doc(SessionController().user.uid)
-        .collection('gaols')
+        .collection('goals')
         .get()
         .then((value) {
       setState(() {
@@ -52,19 +53,7 @@ class _CalendarViewState extends State<CalendarView> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(
-          'Calendar',
-          style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.edit,
-            ),
-          )
-        ],
+        title: const Text('Calendar'),
       ),
       body: Column(
         children: [
@@ -79,7 +68,7 @@ class _CalendarViewState extends State<CalendarView> {
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
@@ -104,83 +93,58 @@ class _CalendarViewState extends State<CalendarView> {
                 return ListView.builder(
                   itemCount: taskList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TaskDetailsScreen(
-                                    taskDetail: taskList[index])),
-                          );
-                        },
-                        child: Container(
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
-                            ),
+                    return StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('User')
+                          .doc(SessionController().user.uid)
+                          .collection('goals')
+                          .doc(taskList[index].goalId)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var data =
+                              snapshot.data!.data() as Map<String, dynamic>?;
+                          if (data != null && snapshot.data!.exists) {
+                            String goalTitle = data['goalTitle'] ?? '';
+                            List<Map<String, dynamic>> streamTaskList =
+                                List<Map<String, dynamic>>.from(
+                                    data['taskList'] ?? []);
 
-                            // border
-                            border: Border(
-                                left: BorderSide(
-                              color: Color(int.parse(taskList[index].taskColor!,
-                                      radix: 16) +
-                                  0xFF000000),
-                              width: 15,
-                            )),
-                          ),
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(color: Colors.grey),
-                                  right: BorderSide(color: Colors.grey),
-                                  bottom: BorderSide(color: Colors.grey),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          taskList[index].taskTitle.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        const Spacer(),
-                                        Text(
-                                          taskList[index].endDate.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 17, color: Colors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          'English Lesson',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ),
+                            // Calculate completed tasks count
+                            int completedTasksCount = streamTaskList
+                                .where((task) => task['isCompleted'] == true)
+                                .length;
+
+                            // // Calculate completed tasks count
+                            // int completedTasksCount = taskList
+                            //     .where((task) => task.isCompleted as bool)
+                            //     .length;
+                            // log("**********" + completedTasksCount.toString());
+                            return TaskTileWidget(
+                              taskDetail: taskList[index],
+                              goalName: goalTitle,
+                              goalTasksCompletedCount: completedTasksCount,
+                              goalTasksTotalCount: streamTaskList.length,
+                            );
+                          } else {
+                            // Handle case when data is null or document doesn't exist
+                            return TaskTileWidget(
+                              taskDetail: taskList[index],
+                              goalName: 'Error Goal title',
+                              goalTasksCompletedCount: 0,
+                              goalTasksTotalCount: 1,
+                            ); // Or any other loading indicator
+                          }
+                        } else {
+                          // Handle loading state
+                          return TaskTileWidget(
+                            taskDetail: taskList[index],
+                            goalName: 'Loading',
+                            goalTasksCompletedCount: 0,
+                            goalTasksTotalCount: 1,
+                          ); // Or any other loading indicator
+                        }
+                      },
                     );
                   },
                 );

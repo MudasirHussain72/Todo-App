@@ -15,13 +15,17 @@ class GoalsDetailScreen extends StatefulWidget {
 class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
   List<TaskModel> taskList = [
     TaskModel(
-      'English C1',
-      '093947',
-      '2/14/2024',
-      'Developer',
-      ['https://youtube.com', 'https://youtube.com' 'https://youtube.com'],
-      '2/14/2024',
-    ),
+        'English C1',
+        '093947',
+        '2/14/2024',
+        'Developer',
+        ['https://youtube.com', 'https://youtube.com' 'https://youtube.com'],
+        '2/14/2024',
+        'Goal Name',
+        'Goal desc',
+        false,
+        '004c00',
+        '004c00'),
   ];
 
   @override
@@ -222,6 +226,8 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => TaskDetailsScreen(
                                           taskDetail: taskList[index],
+                                          goalTasksCompletedCount: 0,
+                                          goalTasksTotalCount: 1,
                                         ))),
                             child: Container(
                               clipBehavior: Clip.antiAlias,
