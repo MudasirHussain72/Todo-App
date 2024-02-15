@@ -6,29 +6,41 @@ class TaskTileWidget extends StatelessWidget {
   final TaskModel? taskDetail;
   final String goalName;
   final int goalTasksCompletedCount, goalTasksTotalCount;
-  const TaskTileWidget(
-      {super.key,
-      this.taskDetail,
-      required this.goalName,
-      required this.goalTasksCompletedCount,
-      required this.goalTasksTotalCount});
+  final double marginTop, marginRight, marginLeft;
+  final bool isOnTapDisabled;
+  const TaskTileWidget({
+    super.key,
+    this.taskDetail,
+    required this.goalName,
+    required this.goalTasksCompletedCount,
+    required this.goalTasksTotalCount,
+    this.marginTop = 10,
+    this.marginRight = 20,
+    this.marginLeft = 20,
+    this.isOnTapDisabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TaskDetailsScreen(
+      onTap: isOnTapDisabled
+          ? null
+          : () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TaskDetailsScreen(
                     taskDetail: taskDetail,
                     goalTasksCompletedCount: goalTasksCompletedCount,
                     goalTasksTotalCount: goalTasksTotalCount,
-                  )),
-        );
-      },
+                  ),
+                ),
+              );
+            },
       child: Container(
-        margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
+        height: 100,
+        margin: EdgeInsets.only(
+            top: marginTop, left: marginLeft, right: marginRight),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(

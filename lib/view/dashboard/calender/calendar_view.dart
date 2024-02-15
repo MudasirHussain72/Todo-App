@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -115,11 +114,6 @@ class _CalendarViewState extends State<CalendarView> {
                                 .where((task) => task['isCompleted'] == true)
                                 .length;
 
-                            // // Calculate completed tasks count
-                            // int completedTasksCount = taskList
-                            //     .where((task) => task.isCompleted as bool)
-                            //     .length;
-                            // log("**********" + completedTasksCount.toString());
                             return TaskTileWidget(
                               taskDetail: taskList[index],
                               goalName: goalTitle,
