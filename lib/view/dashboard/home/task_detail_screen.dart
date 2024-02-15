@@ -22,23 +22,24 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        backgroundColor: Colors.transparent,
+        title: Text(
           'Task Details',
           style: TextStyle(
               fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
         ),
         leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: 20),
           child: GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
               size: 30,
             ),
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: Icon(
@@ -52,45 +53,43 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 SizedBox(
                   width: size.width * 0.9,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Container(
                       decoration: BoxDecoration(
-                        // color: widget.taskDetail!.taskColor,
-                        color: Color(
-                            int.parse(widget.taskDetail!.taskColor.toString())),
+                        color: _parseColor(widget.taskDetail!.taskColor!),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         child: Column(
                           children: [
                             // Time and edit row
                             Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               child: Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.timer_outlined,
                                     color: Colors.white,
                                     size: 30,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 5),
+                                    padding: EdgeInsets.only(left: 5),
                                     child: Text(
                                       widget.taskDetail!.endDate.toString(),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
                                   ),
-                                  const Spacer(),
+                                  Spacer(),
                                   GestureDetector(
                                     onTap: () {},
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.edit_outlined,
                                       color: Colors.white,
                                       size: 30,
@@ -101,7 +100,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             ),
                             // Task name row
                             Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -111,7 +110,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
+                                      Text(
                                         // widget.taskDetail!.taskSubTitle
                                         //     .toString(),
                                         'English Lesson',
@@ -120,21 +119,21 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                       ),
                                       Text(
                                         widget.taskDetail!.taskTitle.toString(),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 25,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
-                                  const Spacer(),
-                                  const Icon(
+                                  Spacer(),
+                                  Icon(
                                     Icons.remove_red_eye_rounded,
                                     color: Colors.white,
                                     size: 50,
                                   ),
-                                  const SizedBox(width: 20),
-                                  const Icon(
+                                  SizedBox(width: 20),
+                                  Icon(
                                     Icons.remove_red_eye_rounded,
                                     color: Colors.white,
                                     size: 50,
@@ -145,27 +144,25 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
                             // Action slider
                             Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
                               child: ActionSlider.standard(
-                                backgroundColor: Color(int.parse(widget
-                                        .taskDetail!.taskColor
-                                        .toString()))
-                                    .withOpacity(0.4),
-                                toggleColor: Color(int.parse(widget
-                                        .taskDetail!.taskColor
-                                        .toString()))
-                                    .withOpacity(0.3),
+                                backgroundColor:
+                                    _parseColor(widget.taskDetail!.taskColor!)
+                                        .withOpacity(0.4),
+                                toggleColor:
+                                    _parseColor(widget.taskDetail!.taskColor!)
+                                        .withOpacity(0.3),
                                 rolling: true,
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_forward_ios,
                                   color: Colors.white,
                                 ),
-                                loadingIcon: const Icon(
+                                loadingIcon: Icon(
                                   Icons.check,
                                   color: Colors.white,
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'Drag to mark done',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -175,8 +172,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 action: (controller) async {
                                   controller
                                       .loading(); //starts loading animation
-                                  await Future.delayed(
-                                      const Duration(seconds: 3));
+                                  await Future.delayed(Duration(seconds: 3));
                                   controller
                                       .success(); //starts success animation
                                 },
@@ -196,7 +192,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(
                             left: 20, right: 20, top: 20, bottom: 5),
                         child: Text(
@@ -208,23 +204,23 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 5),
+                        padding:
+                            EdgeInsets.only(left: 20, right: 20, bottom: 5),
                         child: Text(
                           widget.taskDetail!.endDate.toString(),
                           maxLines: 2,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             color: Colors.grey,
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20),
+                        padding:
+                            EdgeInsets.only(left: 20, right: 20, bottom: 20),
                         child: GestureDetector(
                           onTap: () {},
-                          child: const Text(
+                          child: Text(
                             'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
                             // maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -239,7 +235,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // Goals progress
                 SizedBox(
@@ -249,7 +245,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     children: [
                       SizedBox(
                         width: size.width * 0.48,
-                        child: const Text(
+                        child: Text(
                           'Goal',
                           style: TextStyle(
                             fontSize: 20,
@@ -260,7 +256,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 // Goals progress horizontal listview
                 Container(
                   width: size.width * 0.9,
@@ -271,11 +267,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, top: 12, bottom: 12),
+                        padding: EdgeInsets.only(left: 20, top: 12, bottom: 12),
                         child: Row(
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.only(bottom: 5),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,20 +293,20 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 ],
                               ),
                             ),
-                            const Spacer(),
+                            Spacer(),
                             Padding(
-                              padding: const EdgeInsets.only(right: 10),
+                              padding: EdgeInsets.only(right: 10),
                               child: CircularPercentIndicator(
                                 radius: 40.0,
                                 lineWidth: 8.0,
                                 // percent: double.parse(goalList[index]['percentage'].toString()) / 100,
                                 percent: 0.11,
-                                center: const Text(
+                                center: Text(
                                   '11%',
                                 ),
 
-                                progressColor: Color(int.parse(
-                                    widget.taskDetail!.taskColor.toString())),
+                                progressColor:
+                                    _parseColor(widget.taskDetail!.taskColor!),
                               ),
                             ),
                           ],
@@ -326,5 +321,20 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         ),
       ),
     );
+  }
+
+  Color _parseColor(String colorHex) {
+    // Remove any leading '#' if present in the hexadecimal color string
+    colorHex = colorHex.replaceAll("#", "");
+
+    // Pad the hexadecimal color string with zeros if it's not of length 6 (e.g., "RRGGBB")
+    if (colorHex.length == 6) {
+      colorHex = "FF" + colorHex; // Adding the alpha channel (FF) if missing
+    } else if (colorHex.length != 8) {
+      throw ArgumentError("Invalid hexadecimal color code: $colorHex");
+    }
+
+    // Parse the hexadecimal color code and return a Color object
+    return Color(int.parse(colorHex, radix: 16));
   }
 }

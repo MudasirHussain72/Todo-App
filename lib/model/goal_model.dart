@@ -1,5 +1,3 @@
-import 'package:todo_app/model/task_model.dart';
-
 class GoalsModel {
   String? goalTitle;
   String? goalDescription;

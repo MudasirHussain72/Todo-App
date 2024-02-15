@@ -47,11 +47,11 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   flutter_svg: ^2.0.9
   percent_indicator: ^4.2.3
-  flex_color_picker: ^3.3.1
   action_slider: ^0.7.0
   animated_custom_dropdown: ^3.0.0
   google_sign_in: ^6.2.1
   flutter_material_color_picker: ^1.2.0
+  table_calendar: ^3.1.0
 
 dev_dependencies:
   flutter_test:

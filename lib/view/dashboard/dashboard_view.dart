@@ -24,7 +24,7 @@ class _DashboardViewState extends State<DashboardView>
     return [
       const HomeView(),
       const CreateGoalView(),
-      const CalendarView(),
+      CalendarView(),
     ];
   }
 

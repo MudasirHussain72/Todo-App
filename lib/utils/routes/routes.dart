@@ -28,7 +28,7 @@ class Routes {
       case RouteName.createGoalView:
         return MaterialPageRoute(builder: (_) => const CreateGoalView());
       case RouteName.calenderView:
-        return MaterialPageRoute(builder: (_) => const CalendarView());
+        return MaterialPageRoute(builder: (_) => CalendarView());
       // case RouteName.profileScreen:
       //   return MaterialPageRoute(
       //       builder: (_) => ProfileScreen(
