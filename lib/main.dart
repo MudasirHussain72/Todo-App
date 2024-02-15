@@ -8,6 +8,7 @@ import 'package:todo_app/utils/routes/route_name.dart';
 import 'package:todo_app/utils/routes/routes.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
 import 'package:todo_app/view_model/controller/forgot_password/forgot_password_controller.dart';
+import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/controller/login/login_controller.dart';
 import 'package:todo_app/view_model/controller/signup/signup_controller.dart';
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SignupController()),
         ChangeNotifierProvider(create: (_) => ForgotPasswordController()),
         ChangeNotifierProvider(create: (_) => CreateGoalController()),
+        ChangeNotifierProvider(create: (_) => HomeController()),
       ],
       child: MaterialApp(
         title: 'TODOER',

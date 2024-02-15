@@ -13,6 +13,7 @@ class UserModel {
     this.name,
     this.email,
     this.isNotificationsEnabled,
+    this.profileImage,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +22,7 @@ class UserModel {
     name = json['name'] ?? '';
     email = json['email'] ?? '';
     isNotificationsEnabled = json['isNotificationsEnabled'] ?? '';
+    profileImage = json['profileImage'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class UserModel {
     data['name'] = name;
     data['email'] = email;
     data['isNotificationsEnabled'] = isNotificationsEnabled;
+    data['profileImage'] = profileImage;
     return data;
   }
 }

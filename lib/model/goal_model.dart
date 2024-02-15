@@ -7,7 +7,6 @@ class GoalsModel {
   List<TaskModel>? taskList;
   String? goalId;
 
-
   GoalsModel(
     this.goalTitle,
     this.isCompleted,
@@ -45,6 +44,23 @@ class GoalsModel {
       data['taskList'] = taskList!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  // Method to filter tasks by date and count completed tasks
+  Map<String, int> calculateCompletedTasksCount(String currentDate) {
+    int completedCount = 0;
+    int totalCount = 0;
+
+    for (var task in taskList!) {
+      if (task.startDate == currentDate) {
+        totalCount++;
+        if (task.isCompleted!) {
+          completedCount++;
+        }
+      }
+    }
+
+    return {'completed': completedCount, 'total': totalCount};
   }
 }
 

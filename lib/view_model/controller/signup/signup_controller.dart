@@ -53,6 +53,7 @@ class SignupController with ChangeNotifier {
         uid: value.user!.uid,
         onlineStatus: DateTime.now().microsecondsSinceEpoch.toString(),
         isNotificationsEnabled: true,
+        profileImage: '',
       );
 
       // saving user data in database
@@ -144,6 +145,7 @@ class SignupController with ChangeNotifier {
             uid: value.user!.uid,
             onlineStatus: DateTime.now().microsecondsSinceEpoch.toString(),
             isNotificationsEnabled: true,
+            profileImage: value.user!.photoURL.toString(),
           );
           // saving user data in database
           await SignUpRepository().createUser(value.user!.uid, userModel);

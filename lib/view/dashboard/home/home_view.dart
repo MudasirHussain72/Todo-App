@@ -1,14 +1,12 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo_app/model/goal_model.dart';
-import 'package:todo_app/res/component/logout_button.dart';
-import 'package:todo_app/res/component/network_image_widget.dart';
-import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
 import 'package:todo_app/view/dashboard/home/goals_screen.dart';
-import 'package:todo_app/view_model/services/session_controller.dart';
+import 'package:todo_app/view/dashboard/home/widgets/name_image_and_menu_widget.dart';
+import 'package:todo_app/view/dashboard/home/widgets/show_today_progress_widget.dart';
+import 'package:todo_app/view/dashboard/home/widgets/upcoming_tasks_count_and_see_all_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -59,8 +57,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final messages = Utils().showProgressMessages(1, 10);
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -68,174 +64,13 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               children: [
                 const SizedBox(height: 20),
-                // image container
-                SizedBox(
-                  width: size.width * 0.9,
-                  child: Row(
-                    children: [
-                      NetworkImageWidget(
-                          height: 50,
-                          width: 50,
-                          imageUrl:
-                              SessionController().user.profileImage.toString()),
 
-                      // name column
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hello, ${SessionController().user.name.toString()}',
-                              style: const TextStyle(
-                                  fontSize: 20, color: Colors.grey),
-                            ),
-                            Text(
-                              Utils().showMorningMessage(context),
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const Spacer(),
-                      // right icon
-                      IconButton(
-                        padding: const EdgeInsets.all(0),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Scaffold(
-                                    body: Center(child: LogoutButtonWidget())),
-                              ));
-                        },
-                        icon: const Icon(
-                          Icons.menu,
-                          size: 35,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                const NameImageAndMenuWidget(),
                 const SizedBox(height: 40),
-                // Progress container
-                Container(
-                  height: 200,
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(color: Colors.grey[350]!)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '1/10',
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                            const Spacer(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  messages[0],
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Text(
-                                  messages[1],
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          'Today progress',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      // progress bar
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: LinearPercentIndicator(
-                          animation: true,
-                          lineHeight: 20.0,
-                          animationDuration: 2500,
-                          percent: double.parse('${1 / 10 * 1}'),
-                          backgroundColor: Colors.grey[200]!,
-                          curve: Curves.easeInOut,
-                          barRadius: const Radius.circular(20),
-                          progressColor: Colors.yellow,
-                        ),
-                      ),
-                    ],
-                  ), // end progress bar container
-                ),
+                const ShowTodayProgressWidget(),
                 const SizedBox(height: 30),
-
                 // Upcoming task
-                SizedBox(
-                  width: size.width * 0.9,
-                  child: Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.9,
-                        height: 40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.6,
-                              child: const Text(
-                                'Upcoming task for today',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                'See all',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.grey[700]!),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Colors.transparent,
-                        width: size.width * 0.36,
-                        child: const Text(
-                          '7',
-                          style: TextStyle(
-                              fontSize: 16, color: Colors.deepPurpleAccent),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const UpcomingTaskCountAndSeeAllWidget(),
                 const SizedBox(height: 20),
                 // Task list
                 SizedBox(
@@ -583,7 +418,7 @@ class _HomeViewState extends State<HomeView> {
                                                           FontWeight.w600),
                                                 ),
                                                 const SizedBox(height: 5),
-                                                Text(
+                                                const Text(
                                                   // goalList[index]
                                                   //     .isCompleted
                                                   //     .toString(),

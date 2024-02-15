@@ -78,10 +78,10 @@ class CreateGoalController with ChangeNotifier {
     notifyListeners();
   }
 
-  String _goalId = Uuid().v4();
+  String _goalId = const Uuid().v4();
   String get goalId => _goalId;
   setNewValueToGoalId() {
-    _goalId = Uuid().v4();
+    _goalId = const Uuid().v4();
     log(_goalId);
     notifyListeners();
   }
@@ -90,7 +90,7 @@ class CreateGoalController with ChangeNotifier {
   String _taskId = '';
   String get taskId => _taskId;
   setTaskId() {
-    _taskId = Uuid().v4();
+    _taskId = const Uuid().v4();
     log(_taskId);
     notifyListeners();
   }
@@ -108,23 +108,31 @@ class CreateGoalController with ChangeNotifier {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Add Link'),
+            title: const Text('Add Link'),
             content: TextField(
               controller: linkController,
-              decoration: InputDecoration(hintText: 'Enter link'),
+              decoration: const InputDecoration(hintText: 'Enter link'),
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                  child: Text('Add'),
+                  child: const Text('Add'),
                   onPressed: () {
-                    String link = linkController.text;
-                    addTaskLinks(link).then((value) => Navigator.pop(context));
+                    String link = linkController.text
+                        .trim(); // Trim to remove leading and trailing spaces
+                    if (link.isNotEmpty) {
+                      addTaskLinks(link)
+                          .then((value) => Navigator.pop(context));
+                    } else {
+                      // Show a message indicating that the link cannot be empty
+                      Utils.flushBarErrorMessage(
+                          'Link cannot be empty', context);
+                    }
                   }),
             ],
           );

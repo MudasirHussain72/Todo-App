@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/view/dashboard/calender/calendar_view.dart';
 import 'package:todo_app/view/dashboard/create_goal/create_goal_view.dart';
 import 'package:todo_app/view/dashboard/home/home_view.dart';
+import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -88,9 +90,14 @@ class _DashboardViewState extends State<DashboardView>
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
+    super.initState();
+    final homeViewController =
+        Provider.of<HomeController>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      homeViewController.fetchAndSetTasksCount();
+    });
   }
 
   @override
