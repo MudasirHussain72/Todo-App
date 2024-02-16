@@ -35,7 +35,7 @@ class UpcomingTaskCountAndSeeAllWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
                             PersistentNavBarNavigator.pushNewScreen(
                               context,

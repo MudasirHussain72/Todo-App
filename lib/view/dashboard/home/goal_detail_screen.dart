@@ -13,54 +13,22 @@ class GoalsDetailScreen extends StatefulWidget {
 }
 
 class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
-  List<TaskModel> taskList = [
-    TaskModel(
-        'English C1',
-        '093947',
-        '2/14/2024',
-        'Developer',
-        ['https://youtube.com', 'https://youtube.com' 'https://youtube.com'],
-        '2/14/2024',
-        'Goal Name',
-        'Goal desc',
-        false,
-        '004c00',
-        '004c00'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Goal Details',
-          style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 30,
-            ),
-          ),
-        ),
+        title: const Text('Goal Details'),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.edit,
-            ),
+            child: Icon(Icons.edit),
           )
         ],
       ),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,7 +69,9 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 0),
                           child: Text(
-                            widget.goalsData!.isCompleted.toString(),
+                            widget.goalsData!.isCompleted == true
+                                ? 'Completed'
+                                : 'Not Completed',
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
@@ -136,7 +106,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.grey)),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -154,7 +124,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                         padding:
                             EdgeInsets.only(left: 20, right: 20, bottom: 20),
                         child: Text(
-                          'English is the one of the most widely spoken language in the world.',
+                          widget.goalsData!.goalDescription.toString(),
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.grey,
@@ -164,45 +134,45 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 20, top: 20, bottom: 5),
-                        child: Text(
-                          'Useful Materials',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
-                            // maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // const SizedBox(height: 10),
+                // Container(
+                //   width: size.width * 0.9,
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(12),
+                //       border: Border.all(color: Colors.grey)),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       const Padding(
+                //         padding: EdgeInsets.only(
+                //             left: 20, right: 20, top: 20, bottom: 5),
+                //         child: Text(
+                //           'Useful Materials',
+                //           style: TextStyle(
+                //               fontSize: 20,
+                //               color: Colors.black,
+                //               fontWeight: FontWeight.w500),
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(
+                //             left: 20, right: 20, bottom: 20),
+                //         child: GestureDetector(
+                //           onTap: () {},
+                //           child: const Text(
+                //             'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
+                //             // maxLines: 2,
+                //             overflow: TextOverflow.ellipsis,
+                //             style: TextStyle(
+                //               fontSize: 14,
+                //               color: Colors.blue,
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(height: 20),
                 const Text(
                   'Tasks',
@@ -214,7 +184,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                 SizedBox(
                   width: size.width * 0.9,
                   child: ListView.builder(
-                      itemCount: taskList.length,
+                      itemCount: widget.goalsData!.taskList!.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
@@ -225,7 +195,8 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => TaskDetailsScreen(
-                                          taskDetail: taskList[index],
+                                          taskDetail: widget
+                                              .goalsData!.taskList![index],
                                           goalTasksCompletedCount: 0,
                                           goalTasksTotalCount: 1,
                                         ))),
@@ -261,7 +232,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              taskList[index]
+                                              widget.goalsData!.taskList![index]
                                                   .taskTitle
                                                   .toString(),
                                               style: const TextStyle(
@@ -270,7 +241,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                             ),
                                             const Spacer(),
                                             Text(
-                                              taskList[index]
+                                              widget.goalsData!.taskList![index]
                                                   .endDate
                                                   .toString(),
                                               style: const TextStyle(
@@ -289,7 +260,9 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                               // taskList[index]
                                               //     .taskSubTitle
                                               //     .toString(),
-                                              'English Lesson',
+                                              widget.goalsData!.taskList![index]
+                                                  .goalName
+                                                  .toString(),
                                               style: const TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w600,

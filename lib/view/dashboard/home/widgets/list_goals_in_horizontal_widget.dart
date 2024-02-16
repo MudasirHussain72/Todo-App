@@ -1,115 +1,109 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
+import 'package:todo_app/view_model/controller/home/home_controller.dart';
 
-// ignore: must_be_immutable
 class ListGoalsInHorizontalWidget extends StatelessWidget {
-  ListGoalsInHorizontalWidget({super.key});
-  List<GoalsModel> goalList = [
-    GoalsModel(
-      'English C1',
-      false,
-      1.toString(),
-      '004c00',
-      'desc',
-      [],
-      '004c00',
-    ),
-    GoalsModel(
-      'English C1',
-      false,
-      1.toString(),
-      '004c00',
-      'desc',
-      [],
-      '004c00',
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: SizedBox(
-        height: 110,
-        child: ListView.builder(
-            itemCount: goalList.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: GestureDetector(
-                  onTap: () => Navigator.push(
+    return Consumer<HomeController>(
+      builder: (context, controller, _) {
+        List<GoalsModel> goalList = controller.goalsList;
+
+        return Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: SizedBox(
+            height: 110,
+            child: ListView.builder(
+              itemCount: goalList.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                GoalsModel goal = goalList[index];
+                int totalTasks = goal.taskList!.length;
+                int completedTasks =
+                    goal.taskList!.where((task) => task.isCompleted!).length;
+                double percentage =
+                    totalTasks != 0 ? (completedTasks / totalTasks) * 100 : 0;
+                print(percentage);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => GoalsDetailScreen(
-                                goalsData: goalList[index],
-                              ))),
-                  child: Container(
-                    width: size.width * 0.7,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
+                        builder: (context) => GoalsDetailScreen(
+                          goalsData: goal,
+                        ),
+                      ),
+                    ),
+                    child: Container(
+                      width: size.width * 0.7,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey)),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 12),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      goalList[index].goalTitle.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    const Text(
-                                      // goalList[index]
-                                      //     .isCompleted
-                                      //     .toString(),
-                                      'completed',
-                                      style: TextStyle(
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, top: 12),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        goal.goalTitle.toString(),
+                                        style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: CircularPercentIndicator(
-                                  radius: 40.0,
-                                  lineWidth: 8.0,
-                                  percent: double.parse(goalList[index]
-                                          .percentage
-                                          .toString()) /
-                                      100,
-                                  center: Text(
-                                    '${goalList[index].percentage.toString()}%',
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        'completed',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  progressColor: Color(int.parse(
-                                      '0xff${goalList[index].goalColor}')),
                                 ),
-                              ),
-                            ],
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: CircularPercentIndicator(
+                                    radius: 40.0,
+                                    lineWidth: 8.0,
+                                    percent: percentage / 100,
+                                    center: Text(
+                                      '${percentage.toStringAsFixed(0)}%',
+                                    ),
+                                    progressColor: Color(
+                                        int.parse('0xff${goal.goalColor}')),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            }),
-      ),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
