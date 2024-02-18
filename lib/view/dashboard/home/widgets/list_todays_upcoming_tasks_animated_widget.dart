@@ -1,6 +1,4 @@
 // ignore_for_file: unused_local_variable
-
-import 'dart:developer';
 import 'package:action_slider/action_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/shimmer_widget.dart';
 import 'package:todo_app/res/component/task_tile_widget.dart';
+import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
@@ -94,7 +93,6 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final task = uncompletedUpcomingTasks[index];
-          log(task.taskColor.toString());
 
           return StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -118,28 +116,27 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
 
                   return InkWell(
                       onTap: () {
-                        //   debugPrint('index: $index');
-                        //   setState(() {
-                        //     if (animatedContainerIndex == index) {
-                        //       Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //           builder: (context) => TaskDetailsScreen(
-                        //             goalTasksCompletedCount: completedTasksCount,
-                        //             goalTasksTotalCount: streamTaskList.length,
-                        //             taskDetail: task,
-                        //           ),
-                        //         ),
-                        //       );
-                        //     } else {
-                        //       animatedContainerIndex = index;
-                        //     }
-                        //   });
+                        // debugPrint('index: $index');
+                        setState(() {
+                          if (animatedContainerIndex == index) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TaskDetailsScreen(
+                                  goalID: task.goalId!,
+                                  taskID: task.taskId!,
+                                ),
+                              ),
+                            );
+                          } else {
+                            animatedContainerIndex = index;
+                          }
+                        });
                       },
                       child: AnimatedContainer(
                           margin:
                               EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                          duration: Duration(milliseconds: 1500),
+                          duration: Duration(milliseconds: 1000),
                           height: animatedContainerIndex == index ? 260 : 100,
                           width: size.width,
                           decoration: BoxDecoration(
@@ -147,23 +144,21 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                           child: GestureDetector(
                               onTap: () {
                                 // debugPrint('index: $index');
-                                // setState(() {
-                                //   if (animatedContainerIndex == index) {
-                                //     Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //         builder: (context) => TaskDetailsScreen(
-                                //             goalTasksCompletedCount:
-                                //                 completedTasksCount,
-                                //             goalTasksTotalCount:
-                                //                 streamTaskList.length,
-                                //             taskDetail: task),
-                                //       ),
-                                //     );
-                                //   } else {
-                                //     animatedContainerIndex = index;
-                                //   }
-                                // });
+                                setState(() {
+                                  if (animatedContainerIndex == index) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TaskDetailsScreen(
+                                          goalID: task.goalId!,
+                                          taskID: task.taskId!,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    animatedContainerIndex = index;
+                                  }
+                                });
                               },
                               child: animatedContainerIndex != index
                                   ? TaskTileWidget(
@@ -323,7 +318,8 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                                                           .loading(); //starts loading animation
                                                       await Future.delayed(
                                                           const Duration(
-                                                              seconds: 3));
+                                                              milliseconds:
+                                                                  1500));
                                                       controller
                                                           .success(); //starts success animation
                                                     },

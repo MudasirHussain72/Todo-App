@@ -13,6 +13,7 @@ class ChooseGoalWidget extends StatelessWidget {
     const Goal('Designer', Icons.design_services),
     const Goal('Consultant', Icons.account_balance),
     const Goal('Student', Icons.school),
+    const Goal('Teacher', Icons.school),
   ];
   @override
   Widget build(BuildContext context) {
@@ -22,9 +23,9 @@ class ChooseGoalWidget extends StatelessWidget {
       children: [
         const SizedBox(height: 10),
         const Text(
-          'Goal',
+          'Task Categories',
           style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 6),
         SizedBox(
@@ -34,7 +35,7 @@ class ChooseGoalWidget extends StatelessWidget {
                 closedFillColor: Colors.transparent,
                 closedBorder: Border.all(color: AppColors.slate400),
                 closedBorderRadius: BorderRadius.circular(8)),
-            hintText: 'Choose goal',
+            hintText: 'Choose Categories',
             items: list,
             excludeSelected: false,
             onChanged: (value) {

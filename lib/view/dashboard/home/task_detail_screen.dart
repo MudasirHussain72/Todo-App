@@ -158,7 +158,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         const Icon(
                                           Icons.timer_outlined,
                                           color: Colors.white,
-                                          size: 30,
+                                          size: 35,
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(left: 5),
@@ -169,15 +169,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                                 color: Colors.white),
                                           ),
                                         ),
-                                        const Spacer(),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: const Icon(
-                                            Icons.edit_outlined,
-                                            color: Colors.white,
-                                            size: 30,
-                                          ),
-                                        ),
+                                        // const Spacer(),
+                                        // GestureDetector(
+                                        //   onTap: () {},
+                                        //   child: const Icon(
+                                        //     Icons.edit_outlined,
+                                        //     color: Colors.white,
+                                        //     size: 35,
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -210,17 +210,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                           ],
                                         ),
                                         Spacer(),
-                                        // const Icon(
-                                        //   Icons.remove_red_eye_rounded,
-                                        //   color: Colors.white,
-                                        //   size: 50,
-                                        // ),
-                                        // const SizedBox(width: 20),
-                                        // const Icon(
-                                        //   Icons.remove_red_eye_rounded,
-                                        //   color: Colors.white,
-                                        //   size: 50,
-                                        // ),
+                                        const Icon(
+                                          Icons.remove_red_eye_rounded,
+                                          color: Colors.white,
+                                          size: 35,
+                                        ),
+                                        const SizedBox(width: 20),
+                                        const Icon(
+                                          Icons.remove_red_eye_rounded,
+                                          color: Colors.white,
+                                          size: 35,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -303,22 +303,22 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 20),
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: const Text(
-                                  'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
-                                  // maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(
+                            //       left: 20, right: 20, bottom: 20),
+                            //   child: GestureDetector(
+                            //     onTap: () {},
+                            //     child: const Text(
+                            //       'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
+                            //       // maxLines: 2,
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: TextStyle(
+                            //         fontSize: 14,
+                            //         color: Colors.blue,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
