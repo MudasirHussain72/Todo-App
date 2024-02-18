@@ -7,7 +7,7 @@ class ProfileRepository {
   //Function for profile url update
   Future<void> updateUserProfileUrl(String userId, String profileUrl) async {
     await _firestore.collection(collectionName).doc(userId).update({
-      'profile': profileUrl,
+      'profileImage': profileUrl,
     });
   }
 

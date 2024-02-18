@@ -10,7 +10,6 @@ import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/shimmer_widget.dart';
 import 'package:todo_app/res/component/task_tile_widget.dart';
-import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 

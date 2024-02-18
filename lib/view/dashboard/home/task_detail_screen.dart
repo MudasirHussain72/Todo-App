@@ -3,22 +3,17 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/component/loading_widget.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  // TaskModel? taskDetail;
-  // final int goalTasksCompletedCount, goalTasksTotalCount;
+  final String taskID, goalID;
 
-  TaskDetailsScreen({
-    super.key,
-    // this.taskDetail,
-    // required this.goalTasksCompletedCount,
-    // required this.goalTasksTotalCount,
-  });
+  const TaskDetailsScreen(
+      {super.key, required this.taskID, required this.goalID});
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
@@ -35,8 +30,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         actions: [
           Consumer<HomeController>(
               builder: (context, value, child) => IconButton(
-                    // Inside the IconButton onPressed callback for delete in TaskDetailsScreen
-                    // Inside the IconButton onPressed callback for delete in TaskDetailsScreen
                     onPressed: () async {
                       // try {
                       //   // Check if the task to be deleted is the last task in its goal
@@ -90,7 +83,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                       //   print("Failed to delete task: $error");
                       // }
                     },
-
                     icon: const Icon(Icons.delete),
                   )),
           Consumer<HomeController>(
@@ -103,277 +95,183 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: size.width * 0.9,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        // color: _parseColor(widget.taskDetail!.taskColor!),
-                        color: _parseColor('878787'),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            // Time and edit row
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.timer_outlined,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 5),
-                                    child: Text(
-                                      // widget.taskDetail!.endDate.toString(),
-                                      '0/0/0',
-                                      style: const TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: const Icon(
-                                      Icons.edit_outlined,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Task name row
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        // widget.taskDetail!.goalName.toString(),
-                                        'goal name',
-                                        style: const TextStyle(
-                                            fontSize: 20, color: Colors.white),
-                                      ),
-                                      Text(
-                                        // widget.taskDetail!.taskTitle.toString(),
-                                        'task title',
-                                        style: const TextStyle(
-                                            fontSize: 25,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  // const Icon(
-                                  //   Icons.remove_red_eye_rounded,
-                                  //   color: Colors.white,
-                                  //   size: 50,
-                                  // ),
-                                  // const SizedBox(width: 20),
-                                  // const Icon(
-                                  //   Icons.remove_red_eye_rounded,
-                                  //   color: Colors.white,
-                                  //   size: 50,
-                                  // ),
-                                ],
-                              ),
-                            ),
+        child:
+            // StreamBuilder(
+            // stream: FirebaseFirestore.instance
+            //     .collection('User')
+            //     .doc(SessionController().user.uid.toString())
+            //     .collection('goals')
+            //     .doc(widget.goalID)
+            //     .collection('tasks')
+            //     .snapshots(),
+            //   builder: (context, snapshot) {
+            //     var data=snapshot.data.docs
+            //     return Text('data');
+            //   },
+            // ),
+            FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('User')
+              .doc(SessionController().user.uid.toString())
+              .collection('goals')
+              .doc(widget.goalID)
+              .collection('tasks')
+              .doc(widget.taskID)
+              .get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text("Something went wrong");
+            }
 
-                            // Action slider
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              child: ActionSlider.standard(
-                                backgroundColor:
-                                    // _parseColor(widget.taskDetail!.taskColor!)
-                                    //     .withOpacity(0.4),
-                                    _parseColor('090909').withOpacity(0.4),
-                                toggleColor:
-                                    // _parseColor(widget.taskDetail!.taskColor!)
-                                    //     .withOpacity(0.3),
-                                    _parseColor('090909').withOpacity(0.3),
-                                rolling: true,
-                                icon: const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.white,
-                                ),
-                                loadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                ),
-                                child: const Text(
-                                  'Drag to mark done',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                action: (controller) async {
-                                  controller
-                                      .loading(); //starts loading animation
-                                  await Future.delayed(
-                                      const Duration(seconds: 3));
-                                  controller
-                                      .success(); //starts success animation
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ), // end upcoming task container
-                    ),
-                  ),
-                ),
-                Container(
-                  width: size.width * 0.9,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey)),
+            if (snapshot.hasData && !snapshot.data!.exists) {
+              return const Text("Document does not exist");
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> data =
+                  snapshot.data!.data() as Map<String, dynamic>;
+              TaskModel task = TaskModel.fromJson(data);
+              return SingleChildScrollView(
+                child: Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 20, top: 20, bottom: 5),
-                        child: Text(
-                          'Info',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 5),
-                        child: Text(
-                          // widget.taskDetail!.endDate.toString(),
-                          'taskDetail',
-                          maxLines: 2,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
-                            // maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Goals progress
-                SizedBox(
-                  width: size.width * 0.9,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+                      const SizedBox(height: 20),
                       SizedBox(
-                        width: size.width * 0.48,
-                        child: const Text(
-                          'Goal',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        width: size.width * 0.9,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: _parseColor(task.taskColor!),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  // Time and edit row
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.timer_outlined,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            task.endDate.toString(),
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: const Icon(
+                                            Icons.edit_outlined,
+                                            color: Colors.white,
+                                            size: 30,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Task name row
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              task.goalName!,
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              task.taskTitle.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        // const Icon(
+                                        //   Icons.remove_red_eye_rounded,
+                                        //   color: Colors.white,
+                                        //   size: 50,
+                                        // ),
+                                        // const SizedBox(width: 20),
+                                        // const Icon(
+                                        //   Icons.remove_red_eye_rounded,
+                                        //   color: Colors.white,
+                                        //   size: 50,
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Action slider
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    child: ActionSlider.standard(
+                                      backgroundColor:
+                                          // _parseColor(widget.taskDetail!.taskColor!)
+                                          //     .withOpacity(0.4),
+                                          _parseColor(task.taskColor!)
+                                              .withOpacity(0.4),
+                                      toggleColor:
+                                          // _parseColor(widget.taskDetail!.taskColor!)
+                                          //     .withOpacity(0.3),
+                                          _parseColor(task.taskColor!)
+                                              .withOpacity(0.3),
+                                      rolling: true,
+                                      icon: const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.white,
+                                      ),
+                                      loadingIcon: const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                      ),
+                                      child: const Text(
+                                        'Drag to mark done',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      action: (controller) async {
+                                        controller
+                                            .loading(); //starts loading animation
+                                        await Future.delayed(
+                                            const Duration(seconds: 3));
+                                        controller
+                                            .success(); //starts success animation
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ), // end upcoming task container
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Goals progress horizontal listview
-                Container(
-                  width: size.width * 0.9,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey)),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, top: 12, bottom: 12),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    // widget.taskDetail!.goalName.toString(),
-                                    'taskDetail',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  // Text(
-                                  //   '${widget.goalTasksCompletedCount}/${widget.goalTasksTotalCount}',
-                                  //   style: const TextStyle(
-                                  //       fontSize: 20,
-                                  //       fontWeight: FontWeight.w600,
-                                  //       color: Colors.grey),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                            // const Spacer(),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(right: 10),
-                            //   child: CircularPercentIndicator(
-                            //     radius: 40.0,
-                            //     lineWidth: 8.0,
-                            //     percent: widget.goalTasksCompletedCount /
-                            //         widget.goalTasksTotalCount,
-                            //     center: Text(
-                            //       '${((widget.goalTasksCompletedCount / widget.goalTasksTotalCount) * 100).toStringAsFixed(0)}%',
-                            //       style: const TextStyle(fontSize: 12),
-                            //     ),
-                            //     progressColor:
-                            //         _parseColor(widget.taskDetail!.taskColor!),
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
                       Container(
                         width: size.width * 0.9,
                         decoration: BoxDecoration(
@@ -386,33 +284,170 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                               padding: EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
                               child: Text(
-                                'Description',
+                                'Info',
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(
-                            //       left: 20, right: 20, bottom: 20),
-                            //   child: Text(
-                            //     widget.taskDetail!.goalDescription.toString(),
-                            //     style: const TextStyle(
-                            //       fontSize: 20,
-                            //       color: Colors.grey,
-                            //     ),
-                            //   ),
-                            // ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 5),
+                              child: Text(
+                                task.endDate.toString(),
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20),
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: const Text(
+                                  'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
+                                  // maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Goals progress
+                      SizedBox(
+                        width: size.width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.48,
+                              child: const Text(
+                                'Goal',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Goals progress horizontal listview
+                      Container(
+                        width: size.width * 0.9,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey)),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20, top: 12, bottom: 12),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          task.goalName.toString(),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(height: 5),
+                                        // Text(
+                                        //   '${widget.goalTasksCompletedCount}/${widget.goalTasksTotalCount}',
+                                        //   style: const TextStyle(
+                                        //       fontSize: 20,
+                                        //       fontWeight: FontWeight.w600,
+                                        //       color: Colors.grey),
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(right: 10),
+                                  //   child: CircularPercentIndicator(
+                                  //     radius: 40.0,
+                                  //     lineWidth: 8.0,
+                                  //     percent: widget.goalTasksCompletedCount /
+                                  //         widget.goalTasksTotalCount,
+                                  //     center: Text(
+                                  //       '${((widget.goalTasksCompletedCount / widget.goalTasksTotalCount) * 100).toStringAsFixed(0)}%',
+                                  //       style: const TextStyle(fontSize: 12),
+                                  //     ),
+                                  //     progressColor:
+                                  //         _parseColor(task.taskColor!),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              width: size.width * 0.9,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.grey)),
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 20,
+                                        bottom: 5),
+                                    child: Text(
+                                      'Description',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       left: 20, right: 20, bottom: 20),
+                                  //   child: Text(
+                                  //     widget.taskDetail!.goalDescription.toString(),
+                                  //     style: const TextStyle(
+                                  //       fontSize: 20,
+                                  //       color: Colors.grey,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              );
+            }
+            return const Center(child: LoadingWidget());
+          },
         ),
       ),
     );

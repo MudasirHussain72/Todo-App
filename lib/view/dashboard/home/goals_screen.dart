@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
