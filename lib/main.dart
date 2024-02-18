@@ -29,7 +29,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   runApp(DevicePreview(
-    enabled: !kReleaseMode,
+    enabled: true,
     defaultDevice: DeviceInfo.genericPhone(
         platform: TargetPlatform.iOS,
         id: '1',
