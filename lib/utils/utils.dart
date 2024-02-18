@@ -43,7 +43,8 @@ class Utils {
       completionMessage = 'Congratulations!\nTask completed!';
       additionalMessage = 'Great job!';
     } else {
-      completionMessage = 'Invalid progress values';
+      // completionMessage = 'Invalid progress values';
+      completionMessage = '';
       additionalMessage = '';
     }
 
