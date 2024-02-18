@@ -42,7 +42,7 @@ class ProfileController with ChangeNotifier {
     }
   }
 
-  void uploadImage(BuildContext context) async {
+  Future<void> uploadImage(BuildContext context) async {
     setLoading(true);
     firebase_storage.Reference storageRef = firebase_storage
         .FirebaseStorage.instance
@@ -57,6 +57,7 @@ class ProfileController with ChangeNotifier {
         .updateUserProfileUrl(SessionController().user.uid.toString(), newUrl)
         .then((value) {
       Utils.toastMessage('Profile update');
+      SessionController().user.profileImage = newUrl;
       setLoading(false);
       _image = null;
     }).onError((error, stackTrace) {

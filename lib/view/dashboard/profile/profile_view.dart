@@ -38,7 +38,7 @@ class _ProfileViewState extends State<ProfileView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ProfilePictureWidget(snapshot: snapshot),
+                        ProfilePictureWidget(snapshot: snapshot ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           height: 40,
