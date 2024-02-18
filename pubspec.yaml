@@ -38,7 +38,7 @@ dependencies:
   firebase_core: ^2.25.3
   cloud_firestore: ^4.15.3
   cached_network_image: ^3.3.1
-  intl: ^0.19.0
+  intl: ^0.18.0
   fluttertoast: ^8.2.4
   shared_preferences: ^2.2.2
   another_flushbar: ^1.12.30
@@ -51,11 +51,12 @@ dependencies:
   animated_custom_dropdown: ^3.0.0
   google_sign_in: ^6.2.1
   flutter_material_color_picker: ^1.2.0
-  table_calendar: ^3.1.0
+  table_calendar: ^3.0.9
   uuid: ^4.3.3
   shimmer: ^3.0.0
   firebase_storage: ^11.6.5
   image_picker: ^1.0.7
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:
