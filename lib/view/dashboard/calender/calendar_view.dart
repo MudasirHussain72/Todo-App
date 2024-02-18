@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_app/model/goal_model.dart';
 import 'package:todo_app/res/component/task_tile_widget.dart';
+import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
 final kToday = DateTime.now();
@@ -24,144 +26,155 @@ class _CalendarViewState extends State<CalendarView> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   List<Map<String, dynamic>> _firestoreData = []; // Store Firestore data
-
   @override
   void initState() {
     super.initState();
-    _fetchFirestoreData();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+
+    // // Defer the execution of fetchAndSetTasksCount until after the build phase
+    // Future.delayed(Duration.zero, () {
+    //   Provider.of<HomeController>(context, listen: false)
+    //       .fetchAndSetTasksCount();
+    // });
   }
 
-  // Fetch Firestore data
-  void _fetchFirestoreData() {
-    FirebaseFirestore.instance
-        .collection('User')
-        .doc(SessionController().user.uid)
-        .collection('goals')
-        .get()
-        .then((value) {
-      setState(() {
-        _firestoreData = value.docs.map((doc) => doc.data()).toList();
-      });
-    });
-  }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Calendar'),
-      ),
-      body: Column(
-        children: [
-          TableCalendar<TaskModel>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: const CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
-            ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<TaskModel>>(
-              valueListenable: _selectedEvents,
-              builder: (context, taskList, _) {
-                return ListView.builder(
-                  itemCount: taskList.length,
-                  itemBuilder: (context, index) {
-                    return StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('User')
-                          .doc(SessionController().user.uid)
-                          .collection('goals')
-                          .doc(taskList[index].goalId)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          var data =
-                              snapshot.data!.data() as Map<String, dynamic>?;
-                          if (data != null && snapshot.data!.exists) {
-                            String goalTitle = data['goalTitle'] ?? '';
-                            List<Map<String, dynamic>> streamTaskList =
-                                List<Map<String, dynamic>>.from(
-                                    data['taskList'] ?? []);
-
-                            // Calculate completed tasks count
-                            int completedTasksCount = streamTaskList
-                                .where((task) => task['isCompleted'] == true)
-                                .length;
-
-                            return TaskTileWidget(
-                              taskDetail: taskList[index],
-                              goalName: goalTitle,
-                              goalTasksCompletedCount: completedTasksCount,
-                              goalTasksTotalCount: streamTaskList.length,
-                            );
-                          } else {
-                            // Handle case when data is null or document doesn't exist
-                            return TaskTileWidget(
-                              taskDetail: taskList[index],
-                              goalName: 'Error Goal title',
-                              goalTasksCompletedCount: 0,
-                              goalTasksTotalCount: 1,
-                            ); // Or any other loading indicator
-                          }
-                        } else {
-                          // Handle loading state
-                          return TaskTileWidget(
-                            taskDetail: taskList[index],
-                            goalName: 'Loading',
-                            goalTasksCompletedCount: 0,
-                            goalTasksTotalCount: 1,
-                          ); // Or any other loading indicator
-                        }
-                      },
-                    );
+        key: _scaffoldKey,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('Calendar'),
+        ),
+        body:
+            Consumer<HomeController>(builder: (context, homeController, child) {
+          _firestoreData =
+              homeController.tasksList.map((goal) => goal.toJson()).toList();
+          if (!mounted) {
+            return SizedBox.shrink();
+          } else {
+            return Column(
+              children: [
+                TableCalendar<TaskModel>(
+                  firstDay: kFirstDay,
+                  lastDay: kLastDay,
+                  focusedDay: _focusedDay,
+                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                  rangeStartDay: _rangeStart,
+                  rangeEndDay: _rangeEnd,
+                  calendarFormat: _calendarFormat,
+                  rangeSelectionMode: _rangeSelectionMode,
+                  eventLoader: _getEventsForDay,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  calendarStyle: const CalendarStyle(
+                    // Use `CalendarStyle` to customize the UI
+                    outsideDaysVisible: false,
+                  ),
+                  onDaySelected: _onDaySelected,
+                  onRangeSelected: _onRangeSelected,
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
                   },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+                  onPageChanged: (focusedDay) {
+                    _focusedDay = focusedDay;
+                  },
+                ),
+                const SizedBox(height: 8.0),
+                Expanded(
+                  child: _selectedEvents.value.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Select a date to list tasks',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        )
+                      : ValueListenableBuilder<List<TaskModel>>(
+                          valueListenable: _selectedEvents,
+                          builder: (context, taskList, _) {
+                            return ListView.builder(
+                              itemCount: taskList.length,
+                              itemBuilder: (context, index) {
+                                return StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('User')
+                                      .doc(SessionController().user.uid)
+                                      .collection('goals')
+                                      .doc(taskList[index].goalId)
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      var data = snapshot.data!.data()
+                                          as Map<String, dynamic>?;
+                                      if (data != null &&
+                                          snapshot.data!.exists) {
+                                        String goalTitle =
+                                            data['goalTitle'] ?? '';
+                                        List<Map<String, dynamic>>
+                                            streamTaskList =
+                                            List<Map<String, dynamic>>.from(
+                                                data['taskList'] ?? []);
+
+                                        // Calculate completed tasks count
+                                        int completedTasksCount = streamTaskList
+                                            .where((task) =>
+                                                task['isCompleted'] == true)
+                                            .length;
+
+                                        return TaskTileWidget(
+                                          taskDetail: taskList[index],
+                                          goalName: goalTitle,
+                                          goalTasksCompletedCount:
+                                              completedTasksCount,
+                                          goalTasksTotalCount:
+                                              streamTaskList.length,
+                                        );
+                                      } else {
+                                        // Handle case when data is null or document doesn't exist
+                                        return TaskTileWidget(
+                                          taskDetail: taskList[index],
+                                          goalName: 'Error Goal title',
+                                          goalTasksCompletedCount: 0,
+                                          goalTasksTotalCount: 1,
+                                        ); // Or any other loading indicator
+                                      }
+                                    } else {
+                                      // Handle loading state
+                                      return TaskTileWidget(
+                                        taskDetail: taskList[index],
+                                        goalName: 'Loading',
+                                        goalTasksCompletedCount: 0,
+                                        goalTasksTotalCount: 1,
+                                      ); // Or any other loading indicator
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                ),
+              ],
+            );
+          }
+        }));
   }
 
   List<TaskModel> _getEventsForDay(DateTime day) {
-    List<TaskModel> events = [];
-    for (var data in _firestoreData) {
-      List<dynamic> taskList = data['taskList'];
-      for (var task in taskList) {
-        DateTime startDate = _parseDate(task['startDate']);
-        if (isSameDay(startDate, day)) {
-          events.add(TaskModel.fromJson(task));
-        }
-      }
-    }
-    return events;
+    return _firestoreData
+        // .expand((data) => data['taskList'] ?? []) // Add a null check here
+        .where((task) {
+          DateTime startDate = _parseDate(task['startDate']);
+          return isSameDay(startDate, day);
+        })
+        .map<TaskModel>((task) => TaskModel.fromJson(task))
+        .toList();
   }
 
   DateTime _parseDate(String dateString) {

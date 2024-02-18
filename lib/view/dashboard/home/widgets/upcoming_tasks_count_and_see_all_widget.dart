@@ -35,22 +35,24 @@ class UpcomingTaskCountAndSeeAllWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            PersistentNavBarNavigator.pushNewScreen(
-                              context,
-                              screen: TodayUpcomingTasksScreen(),
-                              withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                            );
-                          },
-                          child: Text(
-                            'See all',
-                            style: TextStyle(
-                                fontSize: 16, color: Colors.grey[700]!),
-                          ),
-                        )
+                        value.upcomingTasksCount.toString() == '0'
+                            ? SizedBox.shrink()
+                            : InkWell(
+                                onTap: () {
+                                  PersistentNavBarNavigator.pushNewScreen(
+                                    context,
+                                    screen: TodayUpcomingTasksScreen(),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino,
+                                  );
+                                },
+                                child: Text(
+                                  'See all',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[700]!),
+                                ),
+                              )
                       ],
                     ),
                   ),

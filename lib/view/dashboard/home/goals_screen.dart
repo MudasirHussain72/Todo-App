@@ -33,14 +33,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       itemCount: goalList.length,
                       itemBuilder: (context, index) {
                         GoalsModel goal = goalList[index];
-                        int totalTasks = goal.taskList!.length;
-                        int completedTasks = goal.taskList!
-                            .where((task) => task.isCompleted!)
-                            .length;
-                        double percentage = totalTasks != 0
-                            ? (completedTasks / totalTasks) * 100
-                            : 0;
-                        print(percentage);
+                        // int totalTasks = goal.taskList!.length;
+                        // int completedTasks = goal.taskList!
+                        //     .where((task) => task.isCompleted!)
+                        //     .length;
+                        // double percentage = totalTasks != 0
+                        //     ? (completedTasks / totalTasks) * 100
+                        //     : 0;
+                        // print(percentage);
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: GestureDetector(
@@ -93,16 +93,16 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                           ),
                                         ),
                                         const Spacer(),
-                                        CircularPercentIndicator(
-                                          radius: 40.0,
-                                          lineWidth: 8.0,
-                                          percent: percentage / 100,
-                                          center: Text(
-                                            '${percentage.toStringAsFixed(0)}%',
-                                          ),
-                                          progressColor: Color(int.parse(
-                                              '0xff${goal.goalColor}')),
-                                        ),
+                                        // CircularPercentIndicator(
+                                        //   radius: 40.0,
+                                        //   lineWidth: 8.0,
+                                        //   percent: percentage / 100,
+                                        //   center: Text(
+                                        //     '${percentage.toStringAsFixed(0)}%',
+                                        //   ),
+                                        //   progressColor: Color(int.parse(
+                                        //       '0xff${goal.goalColor}')),
+                                        // ),
                                       ],
                                     ),
                                   ),

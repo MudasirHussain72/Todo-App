@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todo_app/view_model/services/session_controller.dart';
+
 class GoalsModel {
   String? goalTitle;
   String? goalDescription;
   bool? isCompleted;
   String? percentage;
   String? goalColor;
-  List<TaskModel>? taskList;
+  // List<TaskModel>? taskList;
   String? goalId;
 
   GoalsModel(
@@ -13,7 +16,7 @@ class GoalsModel {
     this.percentage,
     this.goalColor,
     this.goalDescription,
-    this.taskList,
+    // this.taskList,
     this.goalId,
   );
 
@@ -24,12 +27,12 @@ class GoalsModel {
     percentage = json['percentage'];
     goalColor = json['goalColor'];
     goalId = json['goalId'];
-    if (json['taskList'] != null) {
-      taskList = <TaskModel>[];
-      json['taskList'].forEach((v) {
-        taskList!.add(TaskModel.fromJson(v));
-      });
-    }
+    // if (json['taskList'] != null) {
+    //   taskList = <TaskModel>[];
+    //   json['taskList'].forEach((v) {
+    //     taskList!.add(TaskModel.fromJson(v));
+    //   });
+    // }
   }
 
   Map<String, dynamic> toJson() {
@@ -40,24 +43,44 @@ class GoalsModel {
     data['percentage'] = percentage;
     data['goalColor'] = goalColor;
     data['goalId'] = goalId;
-    if (taskList != null) {
-      data['taskList'] = taskList!.map((v) => v.toJson()).toList();
-    }
+    // if (taskList != null) {
+    //   data['taskList'] = taskList!.map((v) => v.toJson()).toList();
+    // }
     return data;
   }
 
   // Method to filter tasks by date and count completed tasks
-  Map<String, int> calculateCompletedTasksCount(String currentDate) {
+  Future<Map<String, int>> calculateCompletedTasksCount(
+      String currentDate) async {
     int completedCount = 0;
     int totalCount = 0;
 
-    for (var task in taskList!) {
-      if (task.startDate == currentDate) {
-        totalCount++;
-        if (task.isCompleted!) {
-          completedCount++;
+    try {
+      // Query the tasks collection for the specified goal and date
+      QuerySnapshot tasksSnapshot = await FirebaseFirestore.instance
+          .collection('User')
+          .doc(SessionController().user.uid)
+          .collection('goals')
+          .doc(goalId)
+          .collection('tasks')
+          .where('startDate', isEqualTo: currentDate)
+          .get();
+
+      // Iterate through the tasks to count completed tasks
+      tasksSnapshot.docs.forEach((taskDoc) {
+        Map<String, dynamic>? taskData =
+            taskDoc.data() as Map<String, dynamic>?;
+
+        if (taskData != null) {
+          totalCount++;
+          if (taskData['isCompleted']) {
+            completedCount++;
+          }
         }
-      }
+      });
+    } catch (e) {
+      // Handle any potential errors
+      print('Error fetching tasks data: $e');
     }
 
     return {'completed': completedCount, 'total': totalCount};

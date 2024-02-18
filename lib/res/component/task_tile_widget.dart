@@ -26,16 +26,16 @@ class TaskTileWidget extends StatelessWidget {
       onTap: isOnTapDisabled
           ? null
           : () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TaskDetailsScreen(
-                    taskDetail: taskDetail,
-                    goalTasksCompletedCount: goalTasksCompletedCount,
-                    goalTasksTotalCount: goalTasksTotalCount,
-                  ),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => TaskDetailsScreen(
+              //       taskDetail: taskDetail,
+              //       goalTasksCompletedCount: goalTasksCompletedCount,
+              //       goalTasksTotalCount: goalTasksTotalCount,
+              //     ),
+              //   ),
+              // );
             },
       child: Container(
         height: 100,

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
+import 'package:todo_app/res/component/shimmer_widget.dart';
 import 'package:todo_app/res/component/task_tile_widget.dart';
 import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
@@ -32,10 +34,54 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
       List<TaskModel> uncompletedUpcomingTasks = controller.upcomingTasks
           .where((task) => task.startDate == todayDate && !task.isCompleted!)
           .toList();
-
-      if (uncompletedUpcomingTasks.isEmpty) {
+      if (controller.fetchAndSetTasksCountLoading) {
         return Center(
-          child: Text("No tasks for today."),
+            child: ShimmerWidget(
+                width: size.width * 0.9, height: size.height / 4));
+      }
+      if (uncompletedUpcomingTasks.isEmpty) {
+        return SizedBox(
+          height: size.height / 4,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "📝",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 30),
+                    ),
+                    Text(
+                      " No Tasks For Today",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 24),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 6),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                      color: AppColors.accentColor,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Text(
+                    "Go ahead & create one",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 16, color: AppColors.whiteColor),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       }
 
@@ -73,23 +119,23 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
 
                   return InkWell(
                       onTap: () {
-                        debugPrint('index: $index');
-                        setState(() {
-                          if (animatedContainerIndex == index) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TaskDetailsScreen(
-                                  goalTasksCompletedCount: completedTasksCount,
-                                  goalTasksTotalCount: streamTaskList.length,
-                                  taskDetail: task,
-                                ),
-                              ),
-                            );
-                          } else {
-                            animatedContainerIndex = index;
-                          }
-                        });
+                        //   debugPrint('index: $index');
+                        //   setState(() {
+                        //     if (animatedContainerIndex == index) {
+                        //       Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) => TaskDetailsScreen(
+                        //             goalTasksCompletedCount: completedTasksCount,
+                        //             goalTasksTotalCount: streamTaskList.length,
+                        //             taskDetail: task,
+                        //           ),
+                        //         ),
+                        //       );
+                        //     } else {
+                        //       animatedContainerIndex = index;
+                        //     }
+                        //   });
                       },
                       child: AnimatedContainer(
                           margin:
@@ -101,24 +147,24 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                               borderRadius: BorderRadius.circular(12)),
                           child: GestureDetector(
                               onTap: () {
-                                debugPrint('index: $index');
-                                setState(() {
-                                  if (animatedContainerIndex == index) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TaskDetailsScreen(
-                                            goalTasksCompletedCount:
-                                                completedTasksCount,
-                                            goalTasksTotalCount:
-                                                streamTaskList.length,
-                                            taskDetail: task),
-                                      ),
-                                    );
-                                  } else {
-                                    animatedContainerIndex = index;
-                                  }
-                                });
+                                // debugPrint('index: $index');
+                                // setState(() {
+                                //   if (animatedContainerIndex == index) {
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //         builder: (context) => TaskDetailsScreen(
+                                //             goalTasksCompletedCount:
+                                //                 completedTasksCount,
+                                //             goalTasksTotalCount:
+                                //                 streamTaskList.length,
+                                //             taskDetail: task),
+                                //       ),
+                                //     );
+                                //   } else {
+                                //     animatedContainerIndex = index;
+                                //   }
+                                // });
                               },
                               child: animatedContainerIndex != index
                                   ? TaskTileWidget(

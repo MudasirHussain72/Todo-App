@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 import 'package:uuid/uuid.dart';
 import '../../../utils/utils.dart';
@@ -148,26 +150,51 @@ class CreateGoalController with ChangeNotifier {
       0.toString(),
       selectedGoalColorCode,
       goalDescController.text.trim(),
-      tasksList,
-      _taskId,
+      // tasksList,
+      _goalId,
     );
     try {
-      FirebaseFirestore.instance
+      // Save goal data to Firestore
+      await FirebaseFirestore.instance
           .collection('User')
           .doc(SessionController().user.uid)
           .collection('goals')
           .doc(_goalId)
-          .set(goalData.toJson())
-          .then((value) {
-        goalNameController.clear();
-        goalDescController.clear();
-        clearTaskList();
-        Utils.flushBarDoneMessage('Goal Created', context);
-      });
-      setLoading(false);
+          .set(goalData.toJson());
+
+// Now, add tasks to the 'tasks' collection under the goal document
+      for (var task in _tasksList) {
+        await FirebaseFirestore.instance
+            .collection('User')
+            .doc(SessionController().user.uid)
+            .collection('goals')
+            .doc(_goalId)
+            .collection('tasks')
+            .doc(task.taskId) // Use the task ID as the document ID
+            .set(task.toJson());
+      }
+
+      // Clear controllers and lists after successful creation
+      goalNameController.clear();
+      goalDescController.clear();
+      clearTaskList();
+      clearTaskLinks();
+      setNewValueToGoalId(); // Generate new goal ID
+      resetTaskId(); // Reset task ID
+      setGoalColorCode('8bc34a'); // Reset goal color
+      setTaskColorCode('9c27b0'); // Reset task color
+      setGoalType(''); // Reset goal type
+
+      // Show success message
+      Utils.flushBarDoneMessage('Goal Created', context);
+
+      // Fetch and set tasks count to reflect changes
+      var homeController = Provider.of<HomeController>(context, listen: false);
+      await homeController.fetchAndSetTasksCount();
     } catch (e) {
-      setLoading(false);
       Utils.flushBarErrorMessage(e.toString(), context);
+    } finally {
+      setLoading(false);
     }
   }
 }

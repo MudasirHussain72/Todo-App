@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
+import 'package:todo_app/res/component/shimmer_widget.dart';
 import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 
@@ -12,7 +14,58 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
     return Consumer<HomeController>(
       builder: (context, controller, _) {
         List<GoalsModel> goalList = controller.goalsList;
-
+        List<TaskModel> taskList = controller.tasksList;
+        if (controller.fetchAndSetTasksCountLoading) {
+          return Center(
+              child: ShimmerWidget(
+            width: size.width * 0.9,
+            height: 110,
+          ));
+        }
+        if (goalList.isEmpty) {
+          return SizedBox(
+            // height: size.height * .1,
+            child: Center(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "🎯 ",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontSize: 30),
+                      ),
+                      Text(
+                        " No goals created",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 6),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: AppColors.accentColor,
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Text(
+                      "Go ahead & create one",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 16, color: AppColors.whiteColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
         return Padding(
           padding: const EdgeInsets.only(left: 10),
           child: SizedBox(
@@ -22,9 +75,13 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 GoalsModel goal = goalList[index];
-                int totalTasks = goal.taskList!.length;
+                // Filter tasks related to the current goal
+                List<TaskModel> tasksForGoal = taskList
+                    .where((task) => task.goalId == goal.goalId)
+                    .toList();
+                int totalTasks = tasksForGoal.length;
                 int completedTasks =
-                    goal.taskList!.where((task) => task.isCompleted!).length;
+                    tasksForGoal.where((task) => task.isCompleted!).length;
                 double percentage =
                     totalTasks != 0 ? (completedTasks / totalTasks) * 100 : 0;
                 print(percentage);
@@ -67,7 +124,7 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        'completed',
+                                        '$completedTasks/$totalTasks',
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,

@@ -1,19 +1,24 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:action_slider/action_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/view_model/controller/home/home_controller.dart';
+import 'package:todo_app/view_model/services/session_controller.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  TaskModel? taskDetail;
-  final int goalTasksCompletedCount, goalTasksTotalCount;
+  // TaskModel? taskDetail;
+  // final int goalTasksCompletedCount, goalTasksTotalCount;
 
-  TaskDetailsScreen(
-      {super.key,
-      this.taskDetail,
-      required this.goalTasksCompletedCount,
-      required this.goalTasksTotalCount});
+  TaskDetailsScreen({
+    super.key,
+    // this.taskDetail,
+    // required this.goalTasksCompletedCount,
+    // required this.goalTasksTotalCount,
+  });
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
@@ -27,11 +32,74 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text('Task Details'),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Icon(Icons.edit),
-          )
+        actions: [
+          Consumer<HomeController>(
+              builder: (context, value, child) => IconButton(
+                    // Inside the IconButton onPressed callback for delete in TaskDetailsScreen
+                    // Inside the IconButton onPressed callback for delete in TaskDetailsScreen
+                    onPressed: () async {
+                      // try {
+                      //   // Check if the task to be deleted is the last task in its goal
+                      //   bool isLastTask = false;
+                      //   for (var goal in value.goalsList) {
+                      //     if (goal.taskList != null &&
+                      //         goal.taskList!.length == 1) {
+                      //       if (goal.taskList!.first.taskId ==
+                      //           widget.taskDetail!.taskId) {
+                      //         isLastTask = true;
+                      //         break;
+                      //       }
+                      //     }
+                      //   }
+
+                      //   // Remove the task from the goal list using its ID
+                      //   for (var goal in value.goalsList) {
+                      //     if (goal.taskList != null) {
+                      //       goal.taskList!.removeWhere((task) =>
+                      //           task.taskId == widget.taskDetail!.taskId);
+                      //     }
+                      //   }
+
+                      //   // Delete the task from Firestore
+                      //   await FirebaseFirestore.instance
+                      //       .collection('User')
+                      //       .doc(SessionController().user.uid)
+                      //       .collection('goals')
+                      //       .doc(widget.taskDetail!.goalId)
+                      //       .update({
+                      //     'taskList': FieldValue.arrayRemove(
+                      //         [widget.taskDetail!.toJson()])
+                      //   }).then((value) => Navigator.pop(context));
+
+                      //   // Refresh the data in HomeController
+                      //   await value.fetchAndSetTasksCount();
+
+                      //   // If it's the last task in the goal, delete the goal document
+                      //   if (isLastTask) {
+                      //     await FirebaseFirestore.instance
+                      //         .collection('User')
+                      //         .doc(SessionController().user.uid)
+                      //         .collection('goals')
+                      //         .doc(widget.taskDetail!.goalId)
+                      //         .delete()
+                      //         .then((value) => Navigator.pop(context));
+                      //     // Refresh the data in HomeController again to reflect the deletion of the goal
+                      //     await value.fetchAndSetTasksCount();
+                      //   }
+                      // } catch (error) {
+                      //   print("Failed to delete task: $error");
+                      // }
+                    },
+
+                    icon: const Icon(Icons.delete),
+                  )),
+          Consumer<HomeController>(
+            builder: (context, value, child) => IconButton(
+              padding: const EdgeInsets.only(right: 20, left: 10),
+              onPressed: () {},
+              icon: const Icon(Icons.edit),
+            ),
+          ),
         ],
       ),
       body: SafeArea(
@@ -46,7 +114,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: _parseColor(widget.taskDetail!.taskColor!),
+                        // color: _parseColor(widget.taskDetail!.taskColor!),
+                        color: _parseColor('878787'),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: SingleChildScrollView(
@@ -67,7 +136,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      widget.taskDetail!.endDate.toString(),
+                                      // widget.taskDetail!.endDate.toString(),
+                                      '0/0/0',
                                       style: const TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -97,12 +167,14 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        widget.taskDetail!.goalName.toString(),
+                                        // widget.taskDetail!.goalName.toString(),
+                                        'goal name',
                                         style: const TextStyle(
                                             fontSize: 20, color: Colors.white),
                                       ),
                                       Text(
-                                        widget.taskDetail!.taskTitle.toString(),
+                                        // widget.taskDetail!.taskTitle.toString(),
+                                        'task title',
                                         style: const TextStyle(
                                             fontSize: 25,
                                             color: Colors.white,
@@ -132,11 +204,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   horizontal: 20, vertical: 20),
                               child: ActionSlider.standard(
                                 backgroundColor:
-                                    _parseColor(widget.taskDetail!.taskColor!)
-                                        .withOpacity(0.4),
+                                    // _parseColor(widget.taskDetail!.taskColor!)
+                                    //     .withOpacity(0.4),
+                                    _parseColor('090909').withOpacity(0.4),
                                 toggleColor:
-                                    _parseColor(widget.taskDetail!.taskColor!)
-                                        .withOpacity(0.3),
+                                    // _parseColor(widget.taskDetail!.taskColor!)
+                                    //     .withOpacity(0.3),
+                                    _parseColor('090909').withOpacity(0.3),
                                 rolling: true,
                                 icon: const Icon(
                                   Icons.arrow_forward_ios,
@@ -192,7 +266,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         padding: const EdgeInsets.only(
                             left: 20, right: 20, bottom: 5),
                         child: Text(
-                          widget.taskDetail!.endDate.toString(),
+                          // widget.taskDetail!.endDate.toString(),
+                          'taskDetail',
                           maxLines: 2,
                           style: const TextStyle(
                             fontSize: 18,
@@ -262,38 +337,39 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.taskDetail!.goalName.toString(),
+                                    // widget.taskDetail!.goalName.toString(),
+                                    'taskDetail',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600),
                                   ),
                                   const SizedBox(height: 5),
-                                  Text(
-                                    '${widget.goalTasksCompletedCount}/${widget.goalTasksTotalCount}',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey),
-                                  ),
+                                  // Text(
+                                  //   '${widget.goalTasksCompletedCount}/${widget.goalTasksTotalCount}',
+                                  //   style: const TextStyle(
+                                  //       fontSize: 20,
+                                  //       fontWeight: FontWeight.w600,
+                                  //       color: Colors.grey),
+                                  // ),
                                 ],
                               ),
                             ),
-                            const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: CircularPercentIndicator(
-                                radius: 40.0,
-                                lineWidth: 8.0,
-                                percent: widget.goalTasksCompletedCount /
-                                    widget.goalTasksTotalCount,
-                                center: Text(
-                                  '${((widget.goalTasksCompletedCount / widget.goalTasksTotalCount) * 100).toStringAsFixed(0)}%',
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                progressColor:
-                                    _parseColor(widget.taskDetail!.taskColor!),
-                              ),
-                            ),
+                            // const Spacer(),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(right: 10),
+                            //   child: CircularPercentIndicator(
+                            //     radius: 40.0,
+                            //     lineWidth: 8.0,
+                            //     percent: widget.goalTasksCompletedCount /
+                            //         widget.goalTasksTotalCount,
+                            //     center: Text(
+                            //       '${((widget.goalTasksCompletedCount / widget.goalTasksTotalCount) * 100).toStringAsFixed(0)}%',
+                            //       style: const TextStyle(fontSize: 12),
+                            //     ),
+                            //     progressColor:
+                            //         _parseColor(widget.taskDetail!.taskColor!),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -317,17 +393,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 20),
-                              child: Text(
-                                widget.taskDetail!.goalDescription.toString(),
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(
+                            //       left: 20, right: 20, bottom: 20),
+                            //   child: Text(
+                            //     widget.taskDetail!.goalDescription.toString(),
+                            //     style: const TextStyle(
+                            //       fontSize: 20,
+                            //       color: Colors.grey,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

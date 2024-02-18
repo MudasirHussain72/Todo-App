@@ -12,6 +12,8 @@ import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/controller/login/login_controller.dart';
 import 'package:todo_app/view_model/controller/signup/signup_controller.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -27,7 +29,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  @override
+  MyApp({super.key});
+
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -39,6 +42,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'TODOER',
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
         initialRoute: RouteName.splashView,

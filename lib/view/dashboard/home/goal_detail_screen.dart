@@ -19,11 +19,16 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Goal Details'),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Icon(Icons.edit),
-          )
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.delete),
+          ),
+          IconButton(
+            padding: EdgeInsets.only(right: 20, left: 10),
+            onPressed: () {},
+            icon: Icon(Icons.edit),
+          ),
         ],
       ),
       body: SafeArea(
@@ -181,104 +186,104 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                       color: Colors.black,
                       fontWeight: FontWeight.w600),
                 ),
-                SizedBox(
-                  width: size.width * 0.9,
-                  child: ListView.builder(
-                      itemCount: widget.goalsData!.taskList!.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: GestureDetector(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TaskDetailsScreen(
-                                          taskDetail: widget
-                                              .goalsData!.taskList![index],
-                                          goalTasksCompletedCount: 0,
-                                          goalTasksTotalCount: 1,
-                                        ))),
-                            child: Container(
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12),
-                                ),
+                // SizedBox(
+                //   width: size.width * 0.9,
+                //   child: ListView.builder(
+                //       itemCount: widget.goalsData!.taskList!.length,
+                //       shrinkWrap: true,
+                //       physics: const NeverScrollableScrollPhysics(),
+                //       itemBuilder: (context, index) {
+                //         return Padding(
+                //           padding: const EdgeInsets.symmetric(vertical: 10),
+                //           child: GestureDetector(
+                //             onTap: () => Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                     builder: (context) => TaskDetailsScreen(
+                //                           taskDetail: widget
+                //                               .goalsData!.taskList![index],
+                //                           goalTasksCompletedCount: 0,
+                //                           goalTasksTotalCount: 1,
+                //                         ))),
+                //             child: Container(
+                //               clipBehavior: Clip.antiAlias,
+                //               decoration: BoxDecoration(
+                //                 borderRadius: const BorderRadius.only(
+                //                   topLeft: Radius.circular(12),
+                //                   bottomLeft: Radius.circular(12),
+                //                 ),
 
-                                // border
-                                border: Border(
-                                    left: BorderSide(
-                                  color: Color(int.parse(
-                                      '0xff${widget.goalsData!.goalColor}')),
-                                  width: 15,
-                                )),
-                              ),
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(color: Colors.grey),
-                                      right: BorderSide(color: Colors.grey),
-                                      bottom: BorderSide(color: Colors.grey),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              widget.goalsData!.taskList![index]
-                                                  .taskTitle
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            const Spacer(),
-                                            Text(
-                                              widget.goalsData!.taskList![index]
-                                                  .endDate
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 17,
-                                                  color: Colors.grey),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              // taskList[index]
-                                              //     .taskSubTitle
-                                              //     .toString(),
-                                              widget.goalsData!.taskList![index]
-                                                  .goalName
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.grey),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ) // end upcoming task container
-                                  ),
-                            ),
-                          ),
-                        );
-                      }),
-                ),
+                //                 // border
+                //                 border: Border(
+                //                     left: BorderSide(
+                //                   color: Color(int.parse(
+                //                       '0xff${widget.goalsData!.goalColor}')),
+                //                   width: 15,
+                //                 )),
+                //               ),
+                //               child: Container(
+                //                   decoration: const BoxDecoration(
+                //                     border: Border(
+                //                       top: BorderSide(color: Colors.grey),
+                //                       right: BorderSide(color: Colors.grey),
+                //                       bottom: BorderSide(color: Colors.grey),
+                //                     ),
+                //                   ),
+                //                   child: Column(
+                //                     children: [
+                //                       Padding(
+                //                         padding: const EdgeInsets.symmetric(
+                //                             horizontal: 20, vertical: 10),
+                //                         child: Row(
+                //                           children: [
+                //                             Text(
+                //                               widget.goalsData!.taskList![index]
+                //                                   .taskTitle
+                //                                   .toString(),
+                //                               style: const TextStyle(
+                //                                   fontSize: 20,
+                //                                   fontWeight: FontWeight.w600),
+                //                             ),
+                //                             const Spacer(),
+                //                             Text(
+                //                               widget.goalsData!.taskList![index]
+                //                                   .endDate
+                //                                   .toString(),
+                //                               style: const TextStyle(
+                //                                   fontSize: 17,
+                //                                   color: Colors.grey),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                       ),
+                //                       Padding(
+                //                         padding: const EdgeInsets.symmetric(
+                //                             horizontal: 20, vertical: 10),
+                //                         child: Row(
+                //                           children: [
+                //                             Text(
+                //                               // taskList[index]
+                //                               //     .taskSubTitle
+                //                               //     .toString(),
+                //                               widget.goalsData!.taskList![index]
+                //                                   .goalName
+                //                                   .toString(),
+                //                               style: const TextStyle(
+                //                                   fontSize: 20,
+                //                                   fontWeight: FontWeight.w600,
+                //                                   color: Colors.grey),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ) // end upcoming task container
+                //                   ),
+                //             ),
+                //           ),
+                //         );
+                //       }),
+                // ),
               ],
             ),
           ),

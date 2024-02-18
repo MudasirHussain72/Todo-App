@@ -89,8 +89,10 @@ class ShowTodayProgressWidget extends StatelessWidget {
                           animation: true,
                           lineHeight: 16.0,
                           animationDuration: 2500,
-                          percent: double.parse(
-                              '${value.completedTasksCount / value.totalTasksCount * 1}'),
+                          percent: value.totalTasksCount != 0
+                              ? value.completedTasksCount /
+                                  value.totalTasksCount
+                              : 0, // Check if totalTasksCount is not zero
                           backgroundColor: Colors.grey[200]!,
                           curve: Curves.easeInOut,
                           barRadius: const Radius.circular(20),
