@@ -30,6 +30,11 @@ void main() async {
   ]);
   runApp(DevicePreview(
     enabled: !kReleaseMode,
+    defaultDevice: DeviceInfo.genericPhone(
+        platform: TargetPlatform.iOS,
+        id: '1',
+        name: "My Device",
+        screenSize: Size(1242, 2688)),
     builder: (context) => MyApp(), // Wrap your app
   ));
   // DependencyInjection.init();
