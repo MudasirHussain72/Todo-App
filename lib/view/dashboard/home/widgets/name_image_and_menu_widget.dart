@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/res/colors.dart';
-import 'package:todo_app/res/component/logout_button.dart';
 import 'package:todo_app/res/component/network_image_widget.dart';
 import 'package:todo_app/utils/utils.dart';
+import 'package:todo_app/view/dashboard/profile/profile_view.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
 class NameImageAndMenuWidget extends StatelessWidget {
@@ -48,8 +48,7 @@ class NameImageAndMenuWidget extends StatelessWidget {
             onPressed: () {
               PersistentNavBarNavigator.pushNewScreen(
                 context,
-                screen:
-                    const Scaffold(body: Center(child: LogoutButtonWidget())),
+                screen: ProfileView(),
                 withNavBar: false,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );

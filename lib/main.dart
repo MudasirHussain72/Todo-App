@@ -10,6 +10,7 @@ import 'package:todo_app/view_model/controller/create_goal/create_goal_controlle
 import 'package:todo_app/view_model/controller/forgot_password/forgot_password_controller.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/controller/login/login_controller.dart';
+import 'package:todo_app/view_model/controller/profile/profile_controller.dart';
 import 'package:todo_app/view_model/controller/signup/signup_controller.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ForgotPasswordController()),
         ChangeNotifierProvider(create: (_) => CreateGoalController()),
         ChangeNotifierProvider(create: (_) => HomeController()),
+        ChangeNotifierProvider(create: (_) => ProfileController()),
       ],
       child: MaterialApp(
         title: 'TODOER',
