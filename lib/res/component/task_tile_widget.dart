@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/view/dashboard/home/task_detail_screen.dart';
 
 class TaskTileWidget extends StatelessWidget {
@@ -75,14 +76,16 @@ class TaskTileWidget extends StatelessWidget {
                     children: [
                       Text(
                         taskDetail!.taskTitle.toString(),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 18, color: AppColors.secondaryTextColor),
                       ),
                       const Spacer(),
                       Text(
                         taskDetail!.endDate.toString(),
-                        style:
-                            const TextStyle(fontSize: 17, color: Colors.grey),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: AppColors.primaryTextColor),
                       ),
                     ],
                   ),
@@ -94,10 +97,10 @@ class TaskTileWidget extends StatelessWidget {
                     children: [
                       Text(
                         goalName,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: AppColors.primaryTextColor),
                       ),
                     ],
                   ),

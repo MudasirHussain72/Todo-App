@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/task_tile_widget.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
@@ -89,10 +90,15 @@ class _CalendarViewState extends State<CalendarView> {
                 const SizedBox(height: 8.0),
                 Expanded(
                   child: _selectedEvents.value.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
                             'Select a date to list tasks',
-                            style: TextStyle(fontSize: 18),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: AppColors.secondaryTextColor),
                           ),
                         )
                       : ValueListenableBuilder<List<TaskModel>>(

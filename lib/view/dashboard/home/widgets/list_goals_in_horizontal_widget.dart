@@ -117,19 +117,23 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
                                     children: [
                                       Text(
                                         goal.goalTitle.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                fontSize: 18,
+                                                color: AppColors
+                                                    .secondaryTextColor),
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
                                         '$completedTasks/$totalTasks',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.grey,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                color:
+                                                    AppColors.primaryTextColor),
                                       ),
                                     ],
                                   ),

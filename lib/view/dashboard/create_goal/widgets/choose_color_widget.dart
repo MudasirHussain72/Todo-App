@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
 
 class ChooseColorWidget extends StatelessWidget {
@@ -15,10 +16,12 @@ class ChooseColorWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 20),
-          const Text(
+          Text(
             'Choose Color',
-            style: TextStyle(
-                fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700),
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(fontSize: 18, color: AppColors.secondaryTextColor),
           ),
           const SizedBox(height: 10),
           MaterialColorPicker(

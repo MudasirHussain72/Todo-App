@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view/dashboard/new_task/new_task_screen.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
@@ -17,12 +18,10 @@ class AddTasksWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Tasks',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 18, color: AppColors.secondaryTextColor),
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
@@ -56,12 +55,14 @@ class AddTasksWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Text(
+                        Text(
                           'Add Tasks',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  fontSize: 16,
+                                  color: AppColors.secondaryTextColor),
                         ),
                       ],
                     ),

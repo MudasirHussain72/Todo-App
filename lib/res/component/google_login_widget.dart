@@ -33,8 +33,13 @@ class GoogleLoginButton extends StatelessWidget {
               const SizedBox(
                 width: 10,
               ),
-              const Text("Google",
-                  style: TextStyle(color: Colors.black, fontSize: 16)),
+              Text(
+                "Google",
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                      fontSize: 16,
+                      color: AppColors.primaryColor,
+                    ),
+              ),
             ],
           ),
         ));

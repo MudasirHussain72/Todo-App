@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/view/dashboard/home/goal_detail_screen.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 
@@ -74,19 +75,22 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                             children: [
                                               Text(
                                                 goal.goalTitle.toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryTextColor),
                                               ),
                                               const SizedBox(height: 5),
-                                              const Text(
-                                                'completed',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.grey,
-                                                ),
+                                              Text(
+                                                'Completed',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryTextColor),
                                               ),
                                             ],
                                           ),

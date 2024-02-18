@@ -55,7 +55,7 @@ class NameImageAndMenuWidget extends StatelessWidget {
             },
             icon: const Icon(
               Icons.menu,
-              size: 35,
+              // size: 35,
             ),
           )
         ],

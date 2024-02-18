@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/shimmer_widget.dart';
 import 'package:todo_app/view/dashboard/home/widgets/show_all_todays_upcoming_tasks_screen.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
@@ -27,21 +28,23 @@ class UpcomingTaskCountAndSeeAllWidget extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: size.width * 0.6,
-                          child: const Text(
+                          child: Text(
                             'Upcoming task for today',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: AppColors.secondaryTextColor),
                           ),
                         ),
                         value.upcomingTasksCount.toString() == '0'
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : InkWell(
                                 onTap: () {
                                   PersistentNavBarNavigator.pushNewScreen(
                                     context,
-                                    screen: TodayUpcomingTasksScreen(),
+                                    screen: const TodayUpcomingTasksScreen(),
                                     withNavBar: false,
                                     pageTransitionAnimation:
                                         PageTransitionAnimation.cupertino,
@@ -49,8 +52,11 @@ class UpcomingTaskCountAndSeeAllWidget extends StatelessWidget {
                                 },
                                 child: Text(
                                   'See all',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[700]!),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                          color: AppColors.primaryTextColor),
                                 ),
                               )
                       ],
@@ -61,7 +67,7 @@ class UpcomingTaskCountAndSeeAllWidget extends StatelessWidget {
                     width: size.width * 0.36,
                     child: Text(
                       value.upcomingTasksCount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16, color: Colors.deepPurpleAccent),
                     ),
                   ),

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/loading_widget.dart';
 import 'package:todo_app/view_model/controller/home/home_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
@@ -148,6 +149,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             child: SingleChildScrollView(
                               physics: const NeverScrollableScrollPhysics(),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Time and edit row
                                   Padding(
@@ -158,15 +160,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         const Icon(
                                           Icons.timer_outlined,
                                           color: Colors.white,
-                                          size: 35,
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(left: 5),
                                           child: Text(
                                             task.endDate.toString(),
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                    color: AppColors.whiteColor,
+                                                    fontSize: 16),
                                           ),
                                         ),
                                         // const Spacer(),
@@ -185,41 +189,27 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                    child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              task.goalName!,
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white),
-                                            ),
-                                            Text(
-                                              task.taskTitle.toString(),
-                                              style: TextStyle(
-                                                  fontSize: 25,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
+                                        Text(
+                                          task.goalName!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  color: AppColors.whiteColor,
+                                                  fontSize: 22),
                                         ),
-                                        Spacer(),
-                                        const Icon(
-                                          Icons.remove_red_eye_rounded,
-                                          color: Colors.white,
-                                          size: 35,
-                                        ),
-                                        const SizedBox(width: 20),
-                                        const Icon(
-                                          Icons.remove_red_eye_rounded,
-                                          color: Colors.white,
-                                          size: 35,
+                                        Text(
+                                          task.taskTitle.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  color: AppColors.whiteColor,
+                                                  fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -249,12 +239,14 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         Icons.check,
                                         color: Colors.white,
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         'Drag to mark done',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                color: AppColors.whiteColor,
+                                                fontSize: 16),
                                       ),
                                       action: (controller) async {
                                         controller
@@ -280,15 +272,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
                               child: Text(
                                 'Info',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        fontSize: 18,
+                                        color: AppColors.secondaryTextColor),
                               ),
                             ),
                             Padding(
@@ -297,10 +291,11 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                               child: Text(
                                 task.endDate.toString(),
                                 maxLines: 2,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        color: AppColors.primaryTextColor),
                               ),
                             ),
                             // Padding(
@@ -333,12 +328,14 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           children: [
                             SizedBox(
                               width: size.width * 0.48,
-                              child: const Text(
+                              child: Text(
                                 'Goal',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        fontSize: 18,
+                                        color: AppColors.secondaryTextColor),
                               ),
                             ),
                           ],
@@ -367,9 +364,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                       children: [
                                         Text(
                                           task.goalName.toString(),
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  fontSize: 18,
+                                                  color: AppColors
+                                                      .secondaryTextColor),
                                         ),
                                         SizedBox(height: 5),
                                         // Text(
@@ -407,7 +408,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(color: Colors.grey)),
-                              child: const Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
@@ -418,10 +419,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         bottom: 5),
                                     child: Text(
                                       'Description',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              fontSize: 18,
+                                              color:
+                                                  AppColors.secondaryTextColor),
                                     ),
                                   ),
                                   // Padding(

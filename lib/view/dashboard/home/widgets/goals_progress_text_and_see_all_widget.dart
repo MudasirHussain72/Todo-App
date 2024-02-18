@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/view/dashboard/home/goals_screen.dart';
 
 class GoalsProgressTextAndSeeAllWidget extends StatelessWidget {
@@ -14,12 +15,12 @@ class GoalsProgressTextAndSeeAllWidget extends StatelessWidget {
         children: [
           SizedBox(
             width: size.width * 0.48,
-            child: const Text(
+            child: Text(
               'Goals Progress',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(fontSize: 18, color: AppColors.secondaryTextColor),
             ),
           ),
           GestureDetector(
@@ -32,7 +33,10 @@ class GoalsProgressTextAndSeeAllWidget extends StatelessWidget {
             },
             child: Text(
               'See all',
-              style: TextStyle(fontSize: 16, color: Colors.grey[700]!),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(color: AppColors.primaryTextColor),
             ),
           )
         ],

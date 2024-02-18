@@ -4,6 +4,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/goal_model.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/loading_widget.dart';
 import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view/dashboard/dashboard_view.dart';
@@ -110,10 +111,12 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                       children: [
                                         Text(
                                           goalsModel.goalTitle.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  color: AppColors
+                                                      .primaryTextColor),
                                         ),
                                       ],
                                     ),
@@ -125,10 +128,12 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                       goalsModel.isCompleted == true
                                           ? 'Completed'
                                           : 'Not Completed',
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              color:
+                                                  AppColors.primaryTextColor),
                                     ),
                                   ),
                                   Padding(
@@ -168,10 +173,13 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                       left: 20, right: 20, top: 20, bottom: 5),
                                   child: Text(
                                     'Description',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                            fontSize: 18,
+                                            color:
+                                                AppColors.secondaryTextColor),
                                   ),
                                 ),
                                 Padding(
@@ -179,22 +187,25 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                       left: 20, right: 20, bottom: 20),
                                   child: Text(
                                     goalsModel.goalDescription.toString(),
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.grey,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                            color: AppColors.primaryTextColor),
                                   ),
                                 ),
                               ],
                             ),
                           ),
                           const SizedBox(height: 20),
-                          const Text(
+                          Text(
                             'Tasks',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    fontSize: 18,
+                                    color: AppColors.secondaryTextColor),
                           ),
                           SizedBox(
                             width: size.width * 0.9,
@@ -286,22 +297,27 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                                               Text(
                                                                 task.taskTitle
                                                                     .toString(),
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodySmall!
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: AppColors
+                                                                            .secondaryTextColor),
                                                               ),
                                                               const Spacer(),
                                                               Text(
                                                                 task.endDate
                                                                     .toString(),
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        17,
-                                                                    color: Colors
-                                                                        .grey),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodySmall!
+                                                                    .copyWith(
+                                                                        color: AppColors
+                                                                            .primaryTextColor),
                                                               ),
                                                             ],
                                                           ),
@@ -318,14 +334,13 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                                                               Text(
                                                                 task.goalName
                                                                     .toString(),
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: Colors
-                                                                        .grey),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodySmall!
+                                                                    .copyWith(
+                                                                        color: AppColors
+                                                                            .primaryTextColor),
                                                               ),
                                                             ],
                                                           ),

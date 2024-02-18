@@ -197,7 +197,7 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                                                       const Icon(
                                                         Icons.timer_outlined,
                                                         color: Colors.white,
-                                                        size: 30,
+                                                        // size: 30,
                                                       ),
                                                       Padding(
                                                         padding:
@@ -206,22 +206,25 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                                                         child: Text(
                                                           task.endDate
                                                               .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .white),
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .bodySmall!
+                                                              .copyWith(
+                                                                  color: AppColors
+                                                                      .whiteColor,
+                                                                  fontSize: 16),
                                                         ),
                                                       ),
                                                       const Spacer(),
-                                                      GestureDetector(
-                                                        onTap: () {},
-                                                        child: const Icon(
-                                                          Icons.edit_outlined,
-                                                          color: Colors.white,
-                                                          size: 30,
-                                                        ),
-                                                      ),
+                                                      // GestureDetector(
+                                                      //   onTap: () {},
+                                                      //   child: const Icon(
+                                                      //     Icons.edit_outlined,
+                                                      //     color: Colors.white,
+                                                      //     // size: 30,
+                                                      //   ),
+                                                      // ),
                                                     ],
                                                   ),
                                                 ),
@@ -245,23 +248,28 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                                                           Text(
                                                             task.goalName
                                                                 .toString(),
-                                                            style:
-                                                                const TextStyle(
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodySmall!
+                                                                .copyWith(
+                                                                    color: AppColors
+                                                                        .whiteColor,
                                                                     fontSize:
-                                                                        20,
-                                                                    color: Colors
-                                                                        .white),
+                                                                        22),
                                                           ),
                                                           Text(
                                                             task.taskTitle
                                                                 .toString(),
-                                                            style: const TextStyle(
-                                                                fontSize: 25,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodySmall!
+                                                                .copyWith(
+                                                                    color: AppColors
+                                                                        .whiteColor,
+                                                                    fontSize:
+                                                                        20),
                                                           ),
                                                         ],
                                                       ),
@@ -270,14 +278,14 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                                                         Icons
                                                             .remove_red_eye_rounded,
                                                         color: Colors.white,
-                                                        size: 40,
+                                                        size: 34,
                                                       ),
                                                       const SizedBox(width: 20),
                                                       const Icon(
                                                         Icons
                                                             .remove_red_eye_rounded,
                                                         color: Colors.white,
-                                                        size: 40,
+                                                        size: 34,
                                                       ),
                                                     ],
                                                   ),
@@ -305,13 +313,15 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                                                       Icons.check,
                                                       color: Colors.white,
                                                     ),
-                                                    child: const Text(
+                                                    child: Text(
                                                       'Drag to mark done',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .whiteColor,
+                                                              fontSize: 16),
                                                     ),
                                                     action: (controller) async {
                                                       controller

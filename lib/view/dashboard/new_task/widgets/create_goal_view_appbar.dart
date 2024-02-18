@@ -21,11 +21,7 @@ class _CreateTaskAppbarState extends State<CreateTaskAppbar> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return AppBar(
-      title: const Text(
-        'New Task',
-        style: TextStyle(
-            fontSize: 20, color: Colors.black, fontWeight: FontWeight.w800),
-      ),
+      title: const Text('New Task'),
       leading: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Consumer<CreateGoalController>(

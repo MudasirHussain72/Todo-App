@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
 
@@ -46,10 +45,11 @@ class _CreateGoalViewAppbarState extends State<CreateGoalViewAppbar> {
                         .then((value) => provider.setNewValueToGoalId());
                   }
                 },
-                child: const Text(
-                  'save',
-                  style: TextStyle(fontSize: 20, color: AppColors.primaryColor),
-                ),
+                child: Text('save',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 18)),
               ),
             ))
       ],
