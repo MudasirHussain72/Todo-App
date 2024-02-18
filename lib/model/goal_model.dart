@@ -99,6 +99,7 @@ class TaskModel {
   String? goalId;
   String? taskId;
   List<String>? links;
+  String? taskDescription;
 
   TaskModel(
     this.taskTitle,
@@ -112,6 +113,7 @@ class TaskModel {
     this.isCompleted,
     this.goalId,
     this.taskId,
+    this.taskDescription,
   );
 
   TaskModel.fromJson(Map<String, dynamic> json) {
@@ -126,6 +128,7 @@ class TaskModel {
     goalId = json['goalId'];
     taskId = json['taskId'];
     links = json['links']?.cast<String>();
+    taskDescription = json['taskDescription'];
   }
 
   Map<String, dynamic> toJson() {
@@ -141,6 +144,7 @@ class TaskModel {
     data['links'] = links;
     data['goalId'] = goalId;
     data['taskId'] = taskId;
+    data['taskDescription'] = taskDescription;
     return data;
   }
 }

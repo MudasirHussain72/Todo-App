@@ -21,6 +21,16 @@ class TaskDetailsScreen extends StatefulWidget {
 }
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -32,85 +42,68 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           Consumer<HomeController>(
               builder: (context, value, child) => IconButton(
                     onPressed: () async {
-                      // try {
-                      //   // Check if the task to be deleted is the last task in its goal
-                      //   bool isLastTask = false;
-                      //   for (var goal in value.goalsList) {
-                      //     if (goal.taskList != null &&
-                      //         goal.taskList!.length == 1) {
-                      //       if (goal.taskList!.first.taskId ==
-                      //           widget.taskDetail!.taskId) {
-                      //         isLastTask = true;
-                      //         break;
-                      //       }
-                      //     }
-                      //   }
+                      try {
+                        // Reference to the Firestore task document to be deleted
+                        DocumentReference taskDocumentReference =
+                            FirebaseFirestore.instance
+                                .collection('User')
+                                .doc(SessionController().user.uid.toString())
+                                .collection('goals')
+                                .doc(widget.goalID)
+                                .collection('tasks')
+                                .doc(widget.taskID);
 
-                      //   // Remove the task from the goal list using its ID
-                      //   for (var goal in value.goalsList) {
-                      //     if (goal.taskList != null) {
-                      //       goal.taskList!.removeWhere((task) =>
-                      //           task.taskId == widget.taskDetail!.taskId);
-                      //     }
-                      //   }
+                        // Reference to the Firestore tasks subcollection
+                        CollectionReference tasksCollectionReference =
+                            FirebaseFirestore.instance
+                                .collection('User')
+                                .doc(SessionController().user.uid.toString())
+                                .collection('goals')
+                                .doc(widget.goalID)
+                                .collection('tasks');
 
-                      //   // Delete the task from Firestore
-                      //   await FirebaseFirestore.instance
-                      //       .collection('User')
-                      //       .doc(SessionController().user.uid)
-                      //       .collection('goals')
-                      //       .doc(widget.taskDetail!.goalId)
-                      //       .update({
-                      //     'taskList': FieldValue.arrayRemove(
-                      //         [widget.taskDetail!.toJson()])
-                      //   }).then((value) => Navigator.pop(context));
+                        // Query the tasks subcollection to get all documents
+                        QuerySnapshot tasksSnapshot =
+                            await tasksCollectionReference.get();
 
-                      //   // Refresh the data in HomeController
-                      //   await value.fetchAndSetTasksCount();
+                        // Check if there's only one document in the tasks subcollection
+                        if (tasksSnapshot.docs.length == 1) {
+                          // If there's only one document, delete the entire goals document
+                          await FirebaseFirestore.instance
+                              .collection('User')
+                              .doc(SessionController().user.uid.toString())
+                              .collection('goals')
+                              .doc(widget.goalID)
+                              .delete();
+                        } else {
+                          // If there are multiple documents, delete only the specific task document
+                          await taskDocumentReference.delete();
+                        }
 
-                      //   // If it's the last task in the goal, delete the goal document
-                      //   if (isLastTask) {
-                      //     await FirebaseFirestore.instance
-                      //         .collection('User')
-                      //         .doc(SessionController().user.uid)
-                      //         .collection('goals')
-                      //         .doc(widget.taskDetail!.goalId)
-                      //         .delete()
-                      //         .then((value) => Navigator.pop(context));
-                      //     // Refresh the data in HomeController again to reflect the deletion of the goal
-                      //     await value.fetchAndSetTasksCount();
-                      //   }
-                      // } catch (error) {
-                      //   print("Failed to delete task: $error");
-                      // }
+                        // Navigate back to the previous screen
+                        Navigator.pop(context);
+                      } catch (error) {
+                        // Handle any errors that occur during the deletion process
+                        print('Failed to delete document: $error');
+                      } finally {
+                        value.fetchAndSetTasksCount();
+                      }
                     },
                     icon: const Icon(Icons.delete),
                   )),
           Consumer<HomeController>(
             builder: (context, value, child) => IconButton(
               padding: const EdgeInsets.only(right: 20, left: 10),
-              onPressed: () {},
+              onPressed: () {
+                _showEditDialog();
+              },
               icon: const Icon(Icons.edit),
             ),
           ),
         ],
       ),
       body: SafeArea(
-        child:
-            // StreamBuilder(
-            // stream: FirebaseFirestore.instance
-            //     .collection('User')
-            //     .doc(SessionController().user.uid.toString())
-            //     .collection('goals')
-            //     .doc(widget.goalID)
-            //     .collection('tasks')
-            //     .snapshots(),
-            //   builder: (context, snapshot) {
-            //     var data=snapshot.data.docs
-            //     return Text('data');
-            //   },
-            // ),
-            FutureBuilder<DocumentSnapshot>(
+        child: FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance
               .collection('User')
               .doc(SessionController().user.uid.toString())
@@ -122,16 +115,19 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {
-              return const Text("Something went wrong");
+              return const Center(child: Text("Something went wrong"));
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
-              return const Text("Document does not exist");
+              return const Center(child: Text("Document does not exist"));
             }
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
               TaskModel task = TaskModel.fromJson(data);
+              // Set previous data in text fields
+              _titleController.text = task.taskTitle ?? '';
+              _descriptionController.text = task.taskDescription ?? '';
               return SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -139,143 +135,129 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                       const SizedBox(height: 20),
                       SizedBox(
                         width: size.width * 0.9,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: _parseColor(task.taskColor!),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: SingleChildScrollView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Time and edit row
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 20),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.timer_outlined,
-                                          color: Colors.white,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            task.endDate.toString(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                    color: AppColors.whiteColor,
-                                                    fontSize: 16),
-                                          ),
-                                        ),
-                                        // const Spacer(),
-                                        // GestureDetector(
-                                        //   onTap: () {},
-                                        //   child: const Icon(
-                                        //     Icons.edit_outlined,
-                                        //     color: Colors.white,
-                                        //     size: 35,
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Task name row
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          task.goalName!,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: _parseColor(task.taskColor!),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.timer_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5),
+                                        child: Text(
+                                          task.endDate.toString(),
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
                                                   color: AppColors.whiteColor,
-                                                  fontSize: 22),
+                                                  fontSize: 16),
                                         ),
-                                        Text(
-                                          task.taskTitle.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                  color: AppColors.whiteColor,
-                                                  fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-
-                                  // Action slider
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 20),
-                                    child: ActionSlider.standard(
-                                      backgroundColor:
-                                          // _parseColor(widget.taskDetail!.taskColor!)
-                                          //     .withOpacity(0.4),
-                                          _parseColor(task.taskColor!)
-                                              .withOpacity(0.4),
-                                      toggleColor:
-                                          // _parseColor(widget.taskDetail!.taskColor!)
-                                          //     .withOpacity(0.3),
-                                          _parseColor(task.taskColor!)
-                                              .withOpacity(0.3),
-                                      rolling: true,
-                                      icon: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white,
-                                      ),
-                                      loadingIcon: const Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                      ),
-                                      child: Text(
-                                        'Drag to mark done',
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        task.goalName!,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
                                                 color: AppColors.whiteColor,
-                                                fontSize: 16),
+                                                fontSize: 22),
                                       ),
-                                      action: (controller) async {
-                                        controller
-                                            .loading(); //starts loading animation
-                                        await Future.delayed(
-                                            const Duration(seconds: 3));
-                                        controller
-                                            .success(); //starts success animation
-                                      },
-                                    ),
+                                      Text(
+                                        task.taskTitle.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                color: AppColors.whiteColor,
+                                                fontSize: 20),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ), // end upcoming task container
-                          ),
+                                ),
+
+                                // Action slider
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  child: ActionSlider.standard(
+                                    backgroundColor:
+                                        // _parseColor(widget.taskDetail!.taskColor!)
+                                        //     .withOpacity(0.4),
+                                        _parseColor(task.taskColor!)
+                                            .withOpacity(0.4),
+                                    toggleColor:
+                                        // _parseColor(widget.taskDetail!.taskColor!)
+                                        //     .withOpacity(0.3),
+                                        _parseColor(task.taskColor!)
+                                            .withOpacity(0.3),
+                                    rolling: true,
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.white,
+                                    ),
+                                    loadingIcon: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                    ),
+                                    child: Text(
+                                      'Drag to mark done',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              color: AppColors.whiteColor,
+                                              fontSize: 16),
+                                    ),
+                                    action: (controller) async {
+                                      controller
+                                          .loading(); //starts loading animation
+                                      await Future.delayed(
+                                          const Duration(seconds: 3));
+                                      controller
+                                          .success(); //starts success animation
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ), // end upcoming task container
                         ),
                       ),
+                      const SizedBox(height: 20),
                       Container(
                         width: size.width * 0.9,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.grey)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20, right: 20, top: 20, bottom: 5),
-                              child: Text(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
                                 'Info',
                                 style: Theme.of(context)
                                     .textTheme
@@ -284,11 +266,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         fontSize: 18,
                                         color: AppColors.secondaryTextColor),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 5),
-                              child: Text(
+                              Text(
                                 task.endDate.toString(),
                                 maxLines: 2,
                                 style: Theme.of(context)
@@ -297,24 +275,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     .copyWith(
                                         color: AppColors.primaryTextColor),
                               ),
-                            ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(
-                            //       left: 20, right: 20, bottom: 20),
-                            //   child: GestureDetector(
-                            //     onTap: () {},
-                            //     child: const Text(
-                            //       'https://www.youtube.com/watch?v=c2JNZ8nxCCU',
-                            //       // maxLines: 2,
-                            //       overflow: TextOverflow.ellipsis,
-                            //       style: TextStyle(
-                            //         fontSize: 14,
-                            //         color: Colors.blue,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
 
@@ -329,7 +291,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             SizedBox(
                               width: size.width * 0.48,
                               child: Text(
-                                'Goal',
+                                'Task description',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!
@@ -342,107 +304,19 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Goals progress horizontal listview
                       Container(
                         width: size.width * 0.9,
+                        padding: const EdgeInsets.all(20),
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.grey)),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20, top: 12, bottom: 12),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 5),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          task.goalName.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                  fontSize: 18,
-                                                  color: AppColors
-                                                      .secondaryTextColor),
-                                        ),
-                                        SizedBox(height: 5),
-                                        // Text(
-                                        //   '${widget.goalTasksCompletedCount}/${widget.goalTasksTotalCount}',
-                                        //   style: const TextStyle(
-                                        //       fontSize: 20,
-                                        //       fontWeight: FontWeight.w600,
-                                        //       color: Colors.grey),
-                                        // ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.only(right: 10),
-                                  //   child: CircularPercentIndicator(
-                                  //     radius: 40.0,
-                                  //     lineWidth: 8.0,
-                                  //     percent: widget.goalTasksCompletedCount /
-                                  //         widget.goalTasksTotalCount,
-                                  //     center: Text(
-                                  //       '${((widget.goalTasksCompletedCount / widget.goalTasksTotalCount) * 100).toStringAsFixed(0)}%',
-                                  //       style: const TextStyle(fontSize: 12),
-                                  //     ),
-                                  //     progressColor:
-                                  //         _parseColor(task.taskColor!),
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              width: size.width * 0.9,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color: Colors.grey)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 20,
-                                        right: 20,
-                                        top: 20,
-                                        bottom: 5),
-                                    child: Text(
-                                      'Description',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontSize: 18,
-                                              color:
-                                                  AppColors.secondaryTextColor),
-                                    ),
-                                  ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.only(
-                                  //       left: 20, right: 20, bottom: 20),
-                                  //   child: Text(
-                                  //     widget.taskDetail!.goalDescription.toString(),
-                                  //     style: const TextStyle(
-                                  //       fontSize: 20,
-                                  //       color: Colors.grey,
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          task.taskDescription.toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: AppColors.primaryTextColor),
                         ),
                       ),
                     ],
@@ -470,5 +344,72 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
     // Parse the hexadecimal color code and return a Color object
     return Color(int.parse(colorHex, radix: 16));
+  }
+
+  void _showEditDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Task'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Task Title'),
+              ),
+              TextField(
+                controller: _descriptionController,
+                decoration:
+                    const InputDecoration(labelText: 'Task Description'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Get updated values from text fields
+                String newTitle = _titleController.text;
+                String newDescription = _descriptionController.text;
+
+                // Reference to the Firestore document to be updated
+                DocumentReference taskDocumentReference = FirebaseFirestore
+                    .instance
+                    .collection('User')
+                    .doc(SessionController().user.uid.toString())
+                    .collection('goals')
+                    .doc(widget.goalID)
+                    .collection('tasks')
+                    .doc(widget.taskID);
+
+                // Update Firestore document with new values
+                taskDocumentReference.update({
+                  'taskTitle': newTitle,
+                  'taskDescription': newDescription,
+                }).then((_) {
+                  // Update successful
+                  print('Document updated successfully');
+                  // Optionally, you can show a success message
+                }).catchError((error) {
+                  // Handle any errors that occur during the update process
+                  print('Failed to update document: $error');
+                  // Optionally, you can show an error message
+                });
+
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

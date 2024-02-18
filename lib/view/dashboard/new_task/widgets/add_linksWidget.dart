@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/view_model/controller/create_goal/create_goal_controller.dart';
 
 class AddLinksWidget extends StatelessWidget {
@@ -35,12 +36,10 @@ class AddLinksWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 20),
-              const Text(
+              Text(
                 'Add links',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 16, color: AppColors.secondaryTextColor),
               ),
             ],
           ),

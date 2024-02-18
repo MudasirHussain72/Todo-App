@@ -15,6 +15,8 @@ class CreateGoalController with ChangeNotifier {
   final goalDescFocusNode = FocusNode();
   //add task variables
   TextEditingController taskNameController = TextEditingController();
+  TextEditingController taskdescController = TextEditingController();
+  FocusNode taskdescFocusNode = FocusNode();
   final taskNameFocusNode = FocusNode();
   TextEditingController startDateController =
       TextEditingController(text: 'Beginning date');

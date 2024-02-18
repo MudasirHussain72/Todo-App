@@ -50,9 +50,10 @@ class _CreateTaskAppbarState extends State<CreateTaskAppbar> {
                             'End date') {
                           Utils.flushBarErrorMessage(
                               'Select end date', context);
-                        } else if (provider.selectedGoalType == '') {
+                        } else if (provider.taskdescController.text.length <
+                            2) {
                           Utils.flushBarErrorMessage(
-                              'Select goal type', context);
+                              'Select task description', context);
                         } else {
                           provider.setTaskId();
 
@@ -70,12 +71,14 @@ class _CreateTaskAppbarState extends State<CreateTaskAppbar> {
                                   false,
                                   provider.goalId,
                                   provider.taskId,
+                                  provider.taskdescController.text.trim(),
                                 ),
                               )
                               .then((value) => provider.resetTaskId())
                               .then((value) {
                             provider.clearTaskLinks();
                             provider.taskNameController.clear();
+                            provider.taskdescController.clear();
                             provider.startDateController.text =
                                 'Beginning date';
                             provider.endDateController.text = 'End date';
