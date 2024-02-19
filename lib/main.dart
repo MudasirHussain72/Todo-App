@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -29,16 +28,9 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   runApp(DevicePreview(
-    enabled: true,
-    defaultDevice: DeviceInfo.genericPhone(
-      platform: TargetPlatform.iOS,
-      id: '1',
-      name: "My Device",
-      screenSize: Size(1242, 2688),
-    ),
-    builder: (context) => MyApp(), // Wrap your app
+    isToolbarVisible: false,
+    builder: (context) => MyApp(),
   ));
-  // DependencyInjection.init();
 }
 
 class MyApp extends StatelessWidget {
