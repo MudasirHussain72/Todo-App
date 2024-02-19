@@ -18,24 +18,46 @@ class SessionController {
     isLogin = false;
   }
 
-  // saving data into shared prefrences
+  // // saving data into shared prefrences
+  // static Future<void> saveUserInPreference(dynamic user) async {
+  //   SharedPreferenceClass.setValueBoolen('isLogin', true);
+  //   SharedPreferenceClass.setValue('user', jsonEncode(user));
+  // }
   static Future<void> saveUserInPreference(dynamic user) async {
     SharedPreferenceClass.setValueBoolen('isLogin', true);
-    SharedPreferenceClass.setValue('user', jsonEncode(user));
+    if (user != null) {
+      SharedPreferenceClass.setValue('user', jsonEncode(user));
+    } else {
+      SharedPreferenceClass.setValue('user', 'null'); // Store null value
+    }
   }
 
-  //getting User Data from shared Preference
+  // //getting User Data from shared Preference
+  // static Future<void> getUserFromPreference() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //   dynamic userData = prefs.getString("user");
+
+  //   if (userData != null) {
+  //     // print(userData);
+  //     // var data = jsonDecode(userData);
+  //     SessionController().user = UserModel.fromJson(jsonDecode(userData));
+  //   } else {
+  //     SessionController().user = UserModel(uid: '');
+  //   }
+
+  //   SessionController().isLogin = prefs.getBool('isLogin') ?? false;
+  // }
   static Future<void> getUserFromPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     dynamic userData = prefs.getString("user");
 
     if (userData != null) {
-      // print(userData);
-      // var data = jsonDecode(userData);
       SessionController().user = UserModel.fromJson(jsonDecode(userData));
     } else {
-      SessionController().user = UserModel(uid: '');
+      SessionController().user =
+          UserModel(uid: ''); // Initialize with default value
     }
 
     SessionController().isLogin = prefs.getBool('isLogin') ?? false;

@@ -176,24 +176,36 @@ class LoginController with ChangeNotifier {
               email: user.email,
               uid: user.uid,
               profileImage: user.photoURL,
+              isNotificationsEnabled: true,
+              onlineStatus: 'online',
             );
 
             // saving user data in database
             await SignUpRepository().createUser(user.uid, userModel);
             CollectionReference ref =
-                FirebaseFirestore.instance.collection('users');
-            DocumentSnapshot snapshot = await ref.doc(user.uid).get();
-            await SessionController.saveUserInPreference(snapshot.data());
-            await SessionController.getUserFromPreference();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DashboardView(),
-                ),
-                (route) => false);
+                FirebaseFirestore.instance.collection('User');
+            await ref.doc(user.uid).get().then((DocumentSnapshot value) async {
+              if (value.exists) {
+                // Check if the data is not null before accessing it
+                if (value.data() != null) {
+                  await SessionController.saveUserInPreference(value.data());
+                  await SessionController.getUserFromPreference();
+                  emailController.clear();
+                  passwordController.clear();
+                  setLoading(false);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RouteName.dashboardView, (route) => false);
+                } else {
+                  // Handle the case when the data is null
+                  print("Error: User data is null");
+                }
+              } else {
+                print("Error: Document does not exist");
+              }
+            });
           } else {
             CollectionReference ref =
-                FirebaseFirestore.instance.collection('users');
+                FirebaseFirestore.instance.collection('User');
             DocumentSnapshot snapshot = await ref.doc(user.uid).get();
             await SessionController.saveUserInPreference(snapshot.data());
             await SessionController.getUserFromPreference();
@@ -231,24 +243,36 @@ class LoginController with ChangeNotifier {
               email: user.email,
               uid: user.uid,
               profileImage: user.photoURL,
+              isNotificationsEnabled: true,
+              onlineStatus: 'online',
             );
 
             // saving user data in database
             await SignUpRepository().createUser(user.uid, userModel);
             CollectionReference ref =
-                FirebaseFirestore.instance.collection('users');
-            DocumentSnapshot snapshot = await ref.doc(user.uid).get();
-            await SessionController.saveUserInPreference(snapshot.data());
-            await SessionController.getUserFromPreference();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DashboardView(),
-                ),
-                (route) => false);
+                FirebaseFirestore.instance.collection('User');
+            await ref.doc(user.uid).get().then((DocumentSnapshot value) async {
+              if (value.exists) {
+                // Check if the data is not null before accessing it
+                if (value.data() != null) {
+                  await SessionController.saveUserInPreference(value.data());
+                  await SessionController.getUserFromPreference();
+                  emailController.clear();
+                  passwordController.clear();
+                  setLoading(false);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RouteName.dashboardView, (route) => false);
+                } else {
+                  // Handle the case when the data is null
+                  print("Error: User data is null");
+                }
+              } else {
+                print("Error: Document does not exist");
+              }
+            });
           } else {
             CollectionReference ref =
-                FirebaseFirestore.instance.collection('users');
+                FirebaseFirestore.instance.collection('User');
             DocumentSnapshot snapshot = await ref.doc(user.uid).get();
             await SessionController.saveUserInPreference(snapshot.data());
             await SessionController.getUserFromPreference();
