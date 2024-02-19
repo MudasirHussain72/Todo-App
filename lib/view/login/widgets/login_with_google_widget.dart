@@ -23,7 +23,7 @@ class LoginWithGoogleWidget extends StatelessWidget {
           child: Consumer<LoginController>(
               builder: (context, value, child) =>
                   GoogleLoginButton(onPressed: () {
-                    value.loginWithGoogle(context);
+                    value.signInWithGoogle(context);
                   }))),
     );
   }
