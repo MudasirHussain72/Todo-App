@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/res/colors.dart';
-import 'package:todo_app/res/component/network_image_widget.dart';
 import 'package:todo_app/view/dashboard/profile/widgets/pick_image_dailog.dart';
 import 'package:todo_app/view_model/controller/profile/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
