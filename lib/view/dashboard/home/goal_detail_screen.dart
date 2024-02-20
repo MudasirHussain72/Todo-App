@@ -25,6 +25,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    setState(() {});
     return Scaffold(
         appBar: AppBar(
           title: const Text('Goal Details'),
