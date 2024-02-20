@@ -23,6 +23,69 @@ class ListTodaysUpcomingTasksAnimatedWidget extends StatefulWidget {
 class _ListTodaysUpcomingTasksAnimatedWidgetState
     extends State<ListTodaysUpcomingTasksAnimatedWidget> {
   int animatedContainerIndex = 0;
+  void _updateTaskCompletionStatus(
+    bool completed,
+    String goalID,
+    String taskID,
+  ) async {
+    try {
+      // Reference to the Firestore task document to be updated
+      DocumentReference taskDocumentReference = FirebaseFirestore.instance
+          .collection('User')
+          .doc(SessionController().user.uid.toString())
+          .collection('goals')
+          .doc(goalID)
+          .collection('tasks')
+          .doc(taskID);
+
+      // Update Firestore document with completion status
+      await taskDocumentReference.update({
+        'isCompleted': completed,
+      }).then((value) async {
+        var provider = Provider.of<HomeController>(context, listen: false);
+        provider.fetchAndSetTasksCount();
+
+        // Check if all tasks under the goal are completed
+        QuerySnapshot tasksSnapshot = await FirebaseFirestore.instance
+            .collection('User')
+            .doc(SessionController().user.uid.toString())
+            .collection('goals')
+            .doc(goalID)
+            .collection('tasks')
+            .get();
+
+        bool allTasksCompleted = tasksSnapshot.docs.every(
+            (doc) => doc.exists && (doc.data() as Map)['isCompleted'] == true);
+
+        // If all tasks are completed, update the goal's isCompleted field
+        if (allTasksCompleted) {
+          DocumentReference goalDocumentReference = FirebaseFirestore.instance
+              .collection('User')
+              .doc(SessionController().user.uid.toString())
+              .collection('goals')
+              .doc(goalID);
+
+          await goalDocumentReference.update({
+            'isCompleted': true,
+          }).then((value) {
+            var provider = Provider.of<HomeController>(context, listen: false);
+            provider.fetchAndSetTasksCount();
+          });
+
+          print('Goal completion status updated successfully');
+        } else {
+          var provider = Provider.of<HomeController>(context, listen: false);
+          provider.fetchAndSetTasksCount();
+        }
+      });
+
+      // Print a message indicating successful update
+      print('Task completion status updated successfully');
+    } catch (error) {
+      // Handle any errors that occur during the update process
+      print('Failed to update task completion status: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,230 +178,216 @@ class _ListTodaysUpcomingTasksAnimatedWidgetState
                       .length;
 
                   return InkWell(
-                      onTap: () {
-                        // debugPrint('index: $index');
-                        setState(() {
-                          if (animatedContainerIndex == index) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TaskDetailsScreen(
-                                  goalID: task.goalId!,
-                                  taskID: task.taskId!,
-                                ),
+                    onTap: () {
+                      // debugPrint('index: $index');
+                      setState(() {
+                        if (animatedContainerIndex == index) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TaskDetailsScreen(
+                                goalID: task.goalId!,
+                                taskID: task.taskId!,
                               ),
-                            );
-                          } else {
-                            animatedContainerIndex = index;
-                          }
-                        });
-                      },
-                      child: AnimatedContainer(
-                          margin:
-                              EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                          duration: Duration(milliseconds: 1000),
-                          height: animatedContainerIndex == index ? 260 : 100,
-                          width: size.width,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12)),
-                          child: GestureDetector(
-                              onTap: () {
-                                // debugPrint('index: $index');
-                                setState(() {
-                                  if (animatedContainerIndex == index) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TaskDetailsScreen(
-                                          goalID: task.goalId!,
-                                          taskID: task.taskId!,
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    animatedContainerIndex = index;
-                                  }
-                                });
-                              },
-                              child: animatedContainerIndex != index
-                                  ? TaskTileWidget(
-                                      goalName: 'goalName',
-                                      goalTasksCompletedCount: 1,
-                                      goalTasksTotalCount: 1,
-                                      taskDetail: task,
-                                      marginLeft: 0,
-                                      marginRight: 0,
-                                      marginTop: 0,
-                                      isOnTapDisabled: true,
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            color:
-                                                _parseColor(task.taskColor!, 1),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: SingleChildScrollView(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            child: Column(
+                            ),
+                          );
+                        } else {
+                          animatedContainerIndex = index;
+                        }
+                      });
+                    },
+                    child: AnimatedContainer(
+                      margin: EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                      duration: Duration(milliseconds: 1000),
+                      height: animatedContainerIndex == index ? 260 : 100,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: GestureDetector(
+                        onTap: () {
+                          // debugPrint('index: $index');
+                          setState(() {
+                            if (animatedContainerIndex == index) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TaskDetailsScreen(
+                                    goalID: task.goalId!,
+                                    taskID: task.taskId!,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              animatedContainerIndex = index;
+                            }
+                          });
+                        },
+                        child: animatedContainerIndex != index
+                            ? TaskTileWidget(
+                                goalName: 'goalName',
+                                goalTasksCompletedCount: 1,
+                                goalTasksTotalCount: 1,
+                                taskDetail: task,
+                                marginLeft: 0,
+                                marginRight: 0,
+                                marginTop: 0,
+                                isOnTapDisabled: true,
+                              )
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      color: _parseColor(task.taskColor!, 1),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: SingleChildScrollView(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      child: Column(
+                                        children: [
+                                          // Time and edit row
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 20),
+                                            child: Row(
                                               children: [
-                                                // Time and edit row
+                                                const Icon(
+                                                  Icons.timer_outlined,
+                                                  color: Colors.white,
+                                                  // size: 30,
+                                                ),
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 20),
-                                                  child: Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.timer_outlined,
-                                                        color: Colors.white,
-                                                        // size: 30,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 5),
-                                                        child: Text(
-                                                          task.endDate
-                                                              .toString(),
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .bodySmall!
-                                                              .copyWith(
-                                                                  color: AppColors
-                                                                      .whiteColor,
-                                                                  fontSize: 16),
-                                                        ),
-                                                      ),
-                                                      const Spacer(),
-                                                      // GestureDetector(
-                                                      //   onTap: () {},
-                                                      //   child: const Icon(
-                                                      //     Icons.edit_outlined,
-                                                      //     color: Colors.white,
-                                                      //     // size: 30,
-                                                      //   ),
-                                                      // ),
-                                                    ],
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5),
+                                                  child: Text(
+                                                    task.endDate.toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall!
+                                                        .copyWith(
+                                                            color: AppColors
+                                                                .whiteColor,
+                                                            fontSize: 16),
                                                   ),
                                                 ),
-                                                // Task name row
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 5),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            task.goalName
-                                                                .toString(),
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodySmall!
-                                                                .copyWith(
-                                                                    color: AppColors
-                                                                        .whiteColor,
-                                                                    fontSize:
-                                                                        22),
-                                                          ),
-                                                          Text(
-                                                            task.taskTitle
-                                                                .toString(),
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodySmall!
-                                                                .copyWith(
-                                                                    color: AppColors
-                                                                        .whiteColor,
-                                                                    fontSize:
-                                                                        20),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const Spacer(),
-                                                      const Icon(
-                                                        Icons
-                                                            .remove_red_eye_rounded,
-                                                        color: Colors.white,
-                                                        size: 34,
-                                                      ),
-                                                      const SizedBox(width: 20),
-                                                      const Icon(
-                                                        Icons
-                                                            .remove_red_eye_rounded,
-                                                        color: Colors.white,
-                                                        size: 34,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-
-                                                // Action slider
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 20),
-                                                  child: ActionSlider.standard(
-                                                    backgroundColor:
-                                                        _parseColor(
-                                                            task.taskColor!,
-                                                            0.4),
-                                                    toggleColor: _parseColor(
-                                                        task.taskColor!, 0.3),
-                                                    rolling: true,
-                                                    icon: const Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      color: Colors.white,
-                                                    ),
-                                                    loadingIcon: const Icon(
-                                                      Icons.check,
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Text(
-                                                      'Drag to mark done',
+                                                const Spacer(),
+                                                // GestureDetector(
+                                                //   onTap: () {},
+                                                //   child: const Icon(
+                                                //     Icons.edit_outlined,
+                                                //     color: Colors.white,
+                                                //     // size: 30,
+                                                //   ),
+                                                // ),
+                                              ],
+                                            ),
+                                          ),
+                                          // Task name row
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 5),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      task.goalName.toString(),
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .bodySmall!
                                                           .copyWith(
                                                               color: AppColors
                                                                   .whiteColor,
-                                                              fontSize: 16),
+                                                              fontSize: 22),
                                                     ),
-                                                    action: (controller) async {
-                                                      controller
-                                                          .loading(); //starts loading animation
-                                                      await Future.delayed(
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  1500));
-                                                      controller
-                                                          .success(); //starts success animation
-                                                    },
-                                                  ),
+                                                    Text(
+                                                      task.taskTitle.toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .whiteColor,
+                                                              fontSize: 20),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Spacer(),
+                                                const Icon(
+                                                  Icons.remove_red_eye_rounded,
+                                                  color: Colors.white,
+                                                  size: 34,
+                                                ),
+                                                const SizedBox(width: 20),
+                                                const Icon(
+                                                  Icons.remove_red_eye_rounded,
+                                                  color: Colors.white,
+                                                  size: 34,
                                                 ),
                                               ],
                                             ),
-                                          )),
-                                    ))));
+                                          ),
+
+                                          // Action slider
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 20),
+                                            child: ActionSlider.standard(
+                                              backgroundColor: _parseColor(
+                                                  task.taskColor!, 0.4),
+                                              toggleColor: _parseColor(
+                                                  task.taskColor!, 0.3),
+                                              rolling: true,
+                                              icon: const Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: Colors.white,
+                                              ),
+                                              loadingIcon: const Icon(
+                                                Icons.check,
+                                                color: Colors.white,
+                                              ),
+                                              child: Text(
+                                                'Drag to mark done',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .whiteColor,
+                                                        fontSize: 16),
+                                              ),
+                                              action: (controller) async {
+                                                controller
+                                                    .loading(); //starts loading animation
+                                                await Future.delayed(
+                                                    const Duration(
+                                                        milliseconds: 1500));
+                                                controller
+                                                    .success(); //starts success animation
+                                                //starts success animation
+                                                _updateTaskCompletionStatus(
+                                                  true,
+                                                  task.goalId!,
+                                                  task.taskId!,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                      ),
+                    ),
+                  );
                 } else {
                   // Handle case when data is null or document doesn't exist
                   return TaskTileWidget(

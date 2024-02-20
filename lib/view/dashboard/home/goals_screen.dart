@@ -26,7 +26,48 @@ class _GoalsScreenState extends State<GoalsScreen> {
               Expanded(child: Consumer<HomeController>(
                 builder: (context, controller, _) {
                   List<GoalsModel> goalList = controller.goalsList;
-
+                  if (goalList.isEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "🎯 ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontSize: 30),
+                            ),
+                            Text(
+                              " No goals created",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontSize: 24),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: AppColors.accentColor,
+                              borderRadius: BorderRadius.circular(50)),
+                          child: Text(
+                            "Go ahead & create one",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    fontSize: 16, color: AppColors.whiteColor),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
                   return SizedBox(
                     height: 110,
                     child: ListView.builder(

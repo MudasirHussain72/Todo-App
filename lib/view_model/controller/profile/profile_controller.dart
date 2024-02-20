@@ -13,7 +13,6 @@ import 'package:todo_app/view/login/login_view.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
 class ProfileController with ChangeNotifier {
-  //initialising repo class.
   final ProfileRepository _repository = ProfileRepository();
 
   CollectionReference ref = FirebaseFirestore.instance.collection('User');

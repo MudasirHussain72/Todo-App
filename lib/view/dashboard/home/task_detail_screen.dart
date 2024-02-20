@@ -23,6 +23,62 @@ class TaskDetailsScreen extends StatefulWidget {
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  void _updateTaskCompletionStatus(bool completed) async {
+    try {
+      // Reference to the Firestore task document to be updated
+      DocumentReference taskDocumentReference = FirebaseFirestore.instance
+          .collection('User')
+          .doc(SessionController().user.uid.toString())
+          .collection('goals')
+          .doc(widget.goalID)
+          .collection('tasks')
+          .doc(widget.taskID);
+
+      // Update Firestore document with completion status
+      await taskDocumentReference.update({
+        'isCompleted': completed,
+      }).then((value) async {
+        // Check if all tasks under the goal are completed
+        QuerySnapshot tasksSnapshot = await FirebaseFirestore.instance
+            .collection('User')
+            .doc(SessionController().user.uid.toString())
+            .collection('goals')
+            .doc(widget.goalID)
+            .collection('tasks')
+            .get();
+
+        bool allTasksCompleted = tasksSnapshot.docs.every(
+            (doc) => doc.exists && (doc.data() as Map)['isCompleted'] == true);
+
+        // If all tasks are completed, update the goal's isCompleted field
+        if (allTasksCompleted) {
+          DocumentReference goalDocumentReference = FirebaseFirestore.instance
+              .collection('User')
+              .doc(SessionController().user.uid.toString())
+              .collection('goals')
+              .doc(widget.goalID);
+
+          await goalDocumentReference.update({
+            'isCompleted': true,
+          }).then((value) {
+            var provider = Provider.of<HomeController>(context, listen: false);
+            provider.fetchAndSetTasksCount();
+          });
+
+          print('Goal completion status updated successfully');
+        } else {
+          var provider = Provider.of<HomeController>(context, listen: false);
+          provider.fetchAndSetTasksCount();
+        }
+      });
+
+      // Print a message indicating successful update
+      print('Task completion status updated successfully');
+    } catch (error) {
+      // Handle any errors that occur during the update process
+      print('Failed to update task completion status: $error');
+    }
+  }
 
   @override
   void dispose() {
@@ -197,50 +253,59 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     ],
                                   ),
                                 ),
-
-                                // Action slider
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 20),
-                                  child: ActionSlider.standard(
-                                    backgroundColor:
-                                        // _parseColor(widget.taskDetail!.taskColor!)
-                                        //     .withOpacity(0.4),
-                                        _parseColor(task.taskColor!)
-                                            .withOpacity(0.4),
-                                    toggleColor:
-                                        // _parseColor(widget.taskDetail!.taskColor!)
-                                        //     .withOpacity(0.3),
-                                        _parseColor(task.taskColor!)
-                                            .withOpacity(0.3),
-                                    rolling: true,
-                                    icon: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
-                                    ),
-                                    loadingIcon: const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                    ),
+                                if (task.isCompleted!)
+                                  Center(
                                     child: Text(
-                                      'Drag to mark done',
+                                      'Task Completed ✅',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
                                           .copyWith(
                                               color: AppColors.whiteColor,
-                                              fontSize: 16),
+                                              fontSize: 22),
                                     ),
-                                    action: (controller) async {
-                                      controller
-                                          .loading(); //starts loading animation
-                                      await Future.delayed(
-                                          const Duration(seconds: 3));
-                                      controller
-                                          .success(); //starts success animation
-                                    },
                                   ),
-                                ),
+                                SizedBox(height: 20),
+                                if (!task.isCompleted!)
+                                  // Action slider
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    child: ActionSlider.standard(
+                                      backgroundColor:
+                                          _parseColor(task.taskColor!)
+                                              .withOpacity(0.4),
+                                      toggleColor: _parseColor(task.taskColor!)
+                                          .withOpacity(0.3),
+                                      rolling: true,
+                                      icon: const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.white,
+                                      ),
+                                      loadingIcon: const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                      ),
+                                      child: Text(
+                                        'Drag to mark done',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                color: AppColors.whiteColor,
+                                                fontSize: 16),
+                                      ),
+                                      action: (controller) async {
+                                        controller
+                                            .loading(); //starts loading animation
+                                        await Future.delayed(
+                                            const Duration(seconds: 3));
+                                        controller.success();
+                                        //starts success animation
+                                        _updateTaskCompletionStatus(true);
+                                      },
+                                    ),
+                                  ),
                               ],
                             ),
                           ), // end upcoming task container
