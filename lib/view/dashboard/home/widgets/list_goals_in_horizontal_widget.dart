@@ -69,7 +69,7 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(left: 10),
           child: SizedBox(
-            height: 110,
+            height: 100,
             child: ListView.builder(
               itemCount: goalList.length,
               scrollDirection: Axis.horizontal,
@@ -97,6 +97,7 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
                       ),
                     ),
                     child: Container(
+                      height: 100,
                       width: size.width * 0.7,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
@@ -106,7 +107,7 @@ class ListGoalsInHorizontalWidget extends StatelessWidget {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 20, top: 12),
+                            padding: const EdgeInsets.only(left: 10, top: 10),
                             child: Row(
                               children: [
                                 Padding(
