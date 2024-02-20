@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/repository/profile_repository.dart';
 import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/input_text_field.dart';
 import 'package:todo_app/utils/utils.dart';
+import 'package:todo_app/view/login/login_view.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
 
 class ProfileController with ChangeNotifier {
@@ -133,5 +136,26 @@ class ProfileController with ChangeNotifier {
             ],
           );
         });
+  }
+
+  //==============DELETE ACCOUNT FUNC============//
+  void deleteAccount(BuildContext context) async {
+    FirebaseFirestore.instance
+        .collection('User')
+        .doc(SessionController().user.uid)
+        .delete()
+        .then((value) {
+      FirebaseAuth.instance.currentUser!.delete().then((value) async {
+        await SessionController.removeUserFromPreferences();
+        await SessionController.getUserFromPreference();
+        // ignore: use_build_context_synchronously
+        PersistentNavBarNavigator.pushNewScreen(context,
+            screen: const LoginView(), withNavBar: false);
+        Utils.toastMessage('Account deleted successfully');
+      });
+    }).onError((error, stackTrace) {
+      Utils.toastMessage(error.toString());
+      Navigator.of(context).pop();
+    });
   }
 }

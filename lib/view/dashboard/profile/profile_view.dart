@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/res/component/logout_button.dart';
 import 'package:todo_app/view/dashboard/profile/widgets/contact_us_terms_policies.dart';
+import 'package:todo_app/view/dashboard/profile/widgets/delete_account_widget.dart';
 import 'package:todo_app/view/dashboard/profile/widgets/profile_picture_widget.dart';
 import 'package:todo_app/view_model/controller/profile/profile_controller.dart';
 import 'package:todo_app/view_model/services/session_controller.dart';
@@ -38,7 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ProfilePictureWidget(snapshot: snapshot ),
+                        ProfilePictureWidget(snapshot: snapshot),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           height: 40,
@@ -88,6 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
                         const Divider(thickness: 1),
                         ContactUsTermsPoliciesWidget(),
                         LogoutButtonWidget(),
+                        DeactiveAccountWidget(),
                       ],
                     ),
                   );

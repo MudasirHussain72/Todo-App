@@ -33,14 +33,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       itemCount: goalList.length,
                       itemBuilder: (context, index) {
                         GoalsModel goal = goalList[index];
-                        // int totalTasks = goal.taskList!.length;
-                        // int completedTasks = goal.taskList!
-                        //     .where((task) => task.isCompleted!)
-                        //     .length;
-                        // double percentage = totalTasks != 0
-                        //     ? (completedTasks / totalTasks) * 100
-                        //     : 0;
-                        // print(percentage);
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: GestureDetector(

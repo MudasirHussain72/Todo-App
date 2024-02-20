@@ -7,7 +7,6 @@ import 'package:todo_app/view_model/services/shared_preference.dart';
 class UserPreferences with ChangeNotifier {
 
   Future<bool> saveUser(var user) async {
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
     SharedPreferenceClass.setValue('user', user);
     notifyListeners();
     return true;

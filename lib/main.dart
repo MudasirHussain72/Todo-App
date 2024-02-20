@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -27,10 +28,14 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(DevicePreview(
-    isToolbarVisible: false,
-    builder: (context) => MyApp(),
-  ));
+  if (kIsWeb) {
+    runApp(DevicePreview(
+      isToolbarVisible: false,
+      builder: (context) => MyApp(),
+    ));
+  } else {
+    runApp(MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -47,13 +52,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => EditGoaController()),
       ],
-      child: MaterialApp(
-        title: 'TODOER',
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        initialRoute: RouteName.splashView,
-        onGenerateRoute: Routes.generateRoute,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+        child: MaterialApp(
+          title: 'TODOER',
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          initialRoute: RouteName.splashView,
+          onGenerateRoute: Routes.generateRoute,
+        ),
       ),
     );
   }
