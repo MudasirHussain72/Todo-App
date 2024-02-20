@@ -25,7 +25,7 @@ jobs:
           channel: 'stable'
           architecture: x64
 
-      - run: flutter build apk --release --split-per-abi
+      - run: flutter build apk --target-platform android-arm --analyze-size
       - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
