@@ -129,19 +129,19 @@ class ProfileController with ChangeNotifier {
 
   //==============DELETE ACCOUNT FUNC============//
   void deleteAccount(BuildContext context) async {
-    FirebaseFirestore.instance
-        .collection('User')
-        .doc(SessionController().user.uid)
-        .delete()
-        .then((value) {
-      FirebaseAuth.instance.currentUser!.delete().then((value) async {
-        SessionController.removeUserFromPreferences();
-        SessionController.getUserFromPreference();
-        // ignore: use_build_context_synchronously
-        PersistentNavBarNavigator.pushNewScreen(context,
-            screen: const LoginView(), withNavBar: false);
-        Utils.toastMessage('Account deleted successfully');
-      });
+    FirebaseAuth.instance.currentUser!.delete().then((value) {
+      // FirebaseFirestore.instance
+      //     .collection('User')
+      //     .doc(SessionController().user.uid)
+      //     .delete()
+      //     .then((value) async {
+      SessionController.removeUserFromPreferences();
+      SessionController.getUserFromPreference();
+      // ignore: use_build_context_synchronously
+      PersistentNavBarNavigator.pushNewScreen(context,
+          screen: const LoginView(), withNavBar: false);
+      Utils.toastMessage('Account deleted successfully');
+      // });
     }).onError((error, stackTrace) {
       Utils.toastMessage(error.toString());
       Navigator.of(context).pop();
