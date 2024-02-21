@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatelessWidget {
@@ -14,14 +14,19 @@ class LoadingWidget extends StatelessWidget {
       child: SizedBox(
         width: size,
         height: size,
-        child: Platform.isIOS
-            ? const CupertinoActivityIndicator(
-                color: Colors.blue,
-              )
-            : const CircularProgressIndicator(
+        child: kIsWeb
+            ? const CircularProgressIndicator(
                 strokeWidth: 2.0,
                 color: Colors.blue,
-              ),
+              )
+            : Platform.isIOS
+                ? const CupertinoActivityIndicator(
+                    color: Colors.blue,
+                  )
+                : const CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    color: Colors.blue,
+                  ),
       ),
     );
   }

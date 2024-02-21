@@ -227,7 +227,7 @@ class LoginController with ChangeNotifier {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return CupertinoAlertDialog(
+          return AlertDialog(
             title: Center(
                 child: Text(
               'Verify Email',
