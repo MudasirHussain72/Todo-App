@@ -223,7 +223,63 @@ class LoginController with ChangeNotifier {
   }
 
   void userEmailIsNotVerified(context, UserCredential userCredential) {
-    if (Platform.isAndroid || kIsWeb) {
+    if (kIsWeb) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Center(
+                child: Text(
+              'Verify Email',
+              style: Theme.of(context)
+                  .textTheme
+                  .displayLarge!
+                  .copyWith(fontSize: 18),
+            )),
+            content: Text(
+              'Your email is not verified. We have already sent you an email link to verify your email.',
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(fontSize: 16),
+            ),
+            actions: [
+              GestureDetector(
+                  onTap: () {
+                    userCredential.user!.sendEmailVerification().then((value) {
+                      Utils.flushBarDoneMessage('Email sent', context, 2);
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Text(
+                    'Send again',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge!
+                        .copyWith(fontSize: 16),
+                  )),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Close',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge!
+                        .copyWith(fontSize: 16),
+                  )),
+              const SizedBox(
+                width: 10,
+              ),
+            ],
+          );
+        },
+      );
+    } else if (Platform.isAndroid) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
