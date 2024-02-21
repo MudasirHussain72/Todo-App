@@ -76,7 +76,8 @@ class Utils {
         fontSize: 16);
   }
 
-  static void flushBarDoneMessage(String message, BuildContext context) {
+  static void flushBarDoneMessage(
+      String message, BuildContext context, seconds) {
     showFlushbar(
         context: context,
         flushbar: Flushbar(
@@ -85,7 +86,7 @@ class Utils {
           flushbarPosition: FlushbarPosition.TOP,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           padding: const EdgeInsets.all(15),
-          duration: const Duration(seconds: 2),
+          duration: Duration(seconds: seconds),
           borderRadius: BorderRadius.circular(10),
           backgroundColor: Colors.green.shade400,
           positionOffset: 20,

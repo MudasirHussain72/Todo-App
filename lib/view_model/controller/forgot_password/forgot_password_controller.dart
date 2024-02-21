@@ -24,7 +24,8 @@ class ForgotPasswordController with ChangeNotifier {
           email: forgotPasswordEmailController.text.trim().toString());
       Utils.flushBarDoneMessage(
           'Please check your email or spam folder, we have sent your recovery email',
-          context);
+          context,
+          6);
       forgotPasswordEmailController.clear();
       setLoading(false);
     } on FirebaseAuthException catch (e) {

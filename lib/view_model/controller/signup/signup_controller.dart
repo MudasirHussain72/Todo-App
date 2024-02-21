@@ -69,7 +69,8 @@ class SignupController with ChangeNotifier {
         Navigator.pop(context);
         Utils.flushBarDoneMessage(
             'Account create successfully, we have sent a verification email to verify your email. Please check inbox or spam folder.',
-            context);
+            context,
+            10);
         SignupController().dispose();
       }).onError((error, stackTrace) {
         setLoading(false);

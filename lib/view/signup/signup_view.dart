@@ -5,8 +5,6 @@ import 'package:todo_app/view/signup/widgets/signup_input_email_text.dart';
 import 'package:todo_app/view/signup/widgets/signup_input_name_text.dart';
 import 'package:todo_app/view/signup/widgets/signup_login_widget.dart';
 import 'package:todo_app/view/signup/widgets/signup_password_input_text_field.dart';
-import 'package:todo_app/view/signup/widgets/signup_with_google_widget.dart';
-import 'package:todo_app/view/signup/widgets/signup_with_text_widget.dart';
 
 class SignupView extends StatefulWidget {
   SignupView({super.key});
@@ -43,8 +41,6 @@ class _SignupViewState extends State<SignupView> {
               SignupEmailInputTextFiled(selected: isAnimationStart),
               SignupPasswordInputTextFiled(selected: isAnimationStart),
               SignupLoginWidget(selected: isAnimationStart),
-              SigninWithTextWidget(selected: isAnimationStart),
-              SignupWithGoogleWidget(selected: isAnimationStart),
               GotoLoginWidget(selected: isAnimationStart),
             ],
           ),

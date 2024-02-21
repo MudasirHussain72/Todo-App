@@ -41,7 +41,7 @@ class _GoalsDetailScreenState extends State<GoalsDetailScreen> {
                       .delete()
                       .then((value) {
                     Utils.flushBarDoneMessage(
-                        'Goal deletion succesfull', context);
+                        'Goal deletion succesfull', context, 2);
                     PersistentNavBarNavigator.pushNewScreen(
                       context,
                       screen: DashboardView(),

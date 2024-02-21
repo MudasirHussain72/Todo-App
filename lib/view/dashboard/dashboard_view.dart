@@ -38,7 +38,7 @@ class _DashboardViewState extends State<DashboardView>
           height: 26,
           width: 26,
           // color: Colors.white,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: AppColors.primaryButtonColor,
         ),
         inactiveIcon: SvgPicture.asset(
           'assets/icons/house.svg',
@@ -47,17 +47,17 @@ class _DashboardViewState extends State<DashboardView>
           // color: Colors.white,
           color: Theme.of(context).colorScheme.onBackground,
         ),
-        activeColorPrimary: AppColors.alertColor,
+        activeColorPrimary: AppColors.primaryButtonColor,
         inactiveColorPrimary: AppColors.whiteColor,
         activeColorSecondary: AppColors.primaryColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(
+        icon: const Icon(
           Icons.add_circle,
           size: 40,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: AppColors.primaryButtonColor,
         ),
-        activeColorPrimary: AppColors.alertColor,
+        activeColorPrimary: AppColors.primaryButtonColor,
         inactiveColorPrimary: AppColors.whiteColor,
         activeColorSecondary: AppColors.primaryColor,
         inactiveIcon: Icon(
@@ -72,7 +72,7 @@ class _DashboardViewState extends State<DashboardView>
           height: 26,
           width: 26,
           // color: Colors.white,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: AppColors.primaryButtonColor,
         ),
         inactiveIcon: SvgPicture.asset(
           'assets/icons/calendar.svg',
@@ -81,7 +81,7 @@ class _DashboardViewState extends State<DashboardView>
           // color: Colors.white,
           color: Theme.of(context).colorScheme.onBackground,
         ),
-        activeColorPrimary: AppColors.alertColor,
+        activeColorPrimary: AppColors.primaryButtonColor,
         inactiveColorPrimary: AppColors.whiteColor,
         activeColorSecondary: AppColors.primaryColor,
       ),

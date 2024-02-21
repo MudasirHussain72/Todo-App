@@ -22,13 +22,7 @@ class DeactiveAccountWidget extends StatelessWidget {
                   return AlertDialog(
                     // <-- SEE HERE
                     title: const Text('Delete account'),
-                    content: const SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text('Are you sure want to delete account?'),
-                        ],
-                      ),
-                    ),
+                    content: const Text('Are you sure want to delete account?'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('No'),
@@ -45,6 +39,7 @@ class DeactiveAccountWidget extends StatelessWidget {
                     ],
                   );
                 },
+                // Utils.toastMessage('Account deletion feature comming soon');
               );
             }),
       ),

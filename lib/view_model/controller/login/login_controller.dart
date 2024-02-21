@@ -247,7 +247,7 @@ class LoginController with ChangeNotifier {
               GestureDetector(
                   onTap: () {
                     userCredential.user!.sendEmailVerification().then((value) {
-                      Utils.flushBarDoneMessage('Email sent', context);
+                      Utils.flushBarDoneMessage('Email sent', context, 2);
                       Navigator.pop(context);
                     });
                   },
@@ -303,7 +303,7 @@ class LoginController with ChangeNotifier {
               isDestructiveAction: true,
               onPressed: () {
                 userCredential.user!.sendEmailVerification().then((value) {
-                  Utils.flushBarDoneMessage('Email sent', context);
+                  Utils.flushBarDoneMessage('Email sent', context, 2);
                   Navigator.pop(context);
                 });
               },

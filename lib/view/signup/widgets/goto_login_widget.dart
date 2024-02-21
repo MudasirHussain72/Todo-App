@@ -9,9 +9,9 @@ class GotoLoginWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedPositioned(
         top: selected
-            ? MediaQuery.of(context).size.height * .675
+            ? MediaQuery.of(context).size.height * .58
             : MediaQuery.of(context).size.height / .5,
-        right: MediaQuery.of(context).size.width / 3.6,
+        right: MediaQuery.of(context).size.width / 4.1,
         duration: const Duration(seconds: 2),
         curve: Curves.fastOutSlowIn,
         child: Row(

@@ -10,7 +10,7 @@ class GotoSignupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedPositioned(
         top: selected
-            ? MediaQuery.of(context).size.height * .64
+            ? MediaQuery.of(context).size.height * .56
             : MediaQuery.of(context).size.height / .5,
         right: MediaQuery.of(context).size.width / 3.6,
         duration: const Duration(seconds: 2),

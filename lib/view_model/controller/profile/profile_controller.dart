@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/repository/profile_repository.dart';
-import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/component/input_text_field.dart';
 import 'package:todo_app/utils/utils.dart';
 import 'package:todo_app/view/login/login_view.dart';
@@ -84,7 +83,7 @@ class ProfileController with ChangeNotifier {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Center(child: Text('Update Info')),
+            title: const Center(child: Text('Update Username')),
             content: SingleChildScrollView(
               child: Column(
                 children: [
@@ -107,13 +106,7 @@ class ProfileController with ChangeNotifier {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
-                    'Cancel',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(color: AppColors.alertColor),
-                  )),
+                  child: Text('Cancel')),
               TextButton(
                   onPressed: () {
                     _repository
@@ -128,10 +121,7 @@ class ProfileController with ChangeNotifier {
                     });
                     Navigator.pop(context);
                   },
-                  child: Text(
-                    'Ok',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ))
+                  child: Text('Ok'))
             ],
           );
         });
@@ -145,8 +135,8 @@ class ProfileController with ChangeNotifier {
         .delete()
         .then((value) {
       FirebaseAuth.instance.currentUser!.delete().then((value) async {
-        await SessionController.removeUserFromPreferences();
-        await SessionController.getUserFromPreference();
+        SessionController.removeUserFromPreferences();
+        SessionController.getUserFromPreference();
         // ignore: use_build_context_synchronously
         PersistentNavBarNavigator.pushNewScreen(context,
             screen: const LoginView(), withNavBar: false);

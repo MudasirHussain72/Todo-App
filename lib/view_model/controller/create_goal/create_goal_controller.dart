@@ -188,7 +188,7 @@ class CreateGoalController with ChangeNotifier {
       setGoalType(''); // Reset goal type
 
       // Show success message
-      Utils.flushBarDoneMessage('Goal Created', context);
+      Utils.flushBarDoneMessage('Goal Created', context,2);
 
       // Fetch and set tasks count to reflect changes
       var homeController = Provider.of<HomeController>(context, listen: false);

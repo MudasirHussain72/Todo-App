@@ -4,8 +4,6 @@ import 'package:todo_app/view/login/widgets/goto_signup_widget.dart';
 import 'package:todo_app/view/login/widgets/login_button_widget.dart';
 import 'package:todo_app/view/login/widgets/login_input_email_text.dart';
 import 'package:todo_app/view/login/widgets/login_password_input_text_field.dart';
-import 'package:todo_app/view/login/widgets/login_with_google_widget.dart';
-import 'package:todo_app/view/login/widgets/signin_with_text_widget.dart';
 import 'package:todo_app/view/login/widgets/welcome_back_text_widget.dart';
 
 class LoginView extends StatefulWidget {
@@ -43,8 +41,6 @@ class _LoginViewState extends State<LoginView> {
               LoginPasswordInputTextFiled(selected: isAnimationStart),
               ForgotTextWidget(selected: isAnimationStart),
               LoginButtonWidget(selected: isAnimationStart),
-              SigninWithTextWidget(selected: isAnimationStart),
-              LoginWithGoogleWidget(selected: isAnimationStart),
               GotoSignupWidget(selected: isAnimationStart),
             ],
           ),
